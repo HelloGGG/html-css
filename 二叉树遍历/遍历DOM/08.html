@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	 <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=3, minimum-scale=1, user-scalable=no">
+	<title>08</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		p{
+			display: flex;
+			width: 1000px;
+			height: 50px;
+			justify-content: space-around;
+			align-items: center;
+			margin: 20px auto;
+			font-family: 'SimHei';
+			font-size: 30px;
+		}
+
+		p button{
+			height: 50px;
+			width: 100px;
+			appearance:none;
+			outline: none;
+			background: -webkit-linear-gradient(#A3CD39,#F43E71);
+			font-size: 30px;
+
+		}
+
+		p input{
+			height: 50px;
+			width: 900px;
+			border-radius: 25px;
+			outline: none;
+			text-indent: 30px;
+			font-size: 30px;
+		}
+
+		.root,.root div{
+		  display: flex;
+		  flex-flow: row wrap;
+		  justify-content: space-around;
+		  align-items: center;
+		  background: #fff;
+		  margin: 5px;
+		  padding: 10px;
+		  border: 3px solid #000;
+		  border-radius: 4px;
+		  color: #000;
+		  cursor: pointer;
+		  font-size: 30px;
+		}
+
+	</style>
+</head>
+<body>
+	<p>选中某个节点元素后,点击删除按钮，则将该节点及其所有子节点删除掉</p>
+	<p>选中某个节点元素后,点击增加按钮，则在该节点下增加一个子节点，节点内容为输入框中内容，插入在其子节点的最后一个位置</p>
+	 <p><button class="btn_preOrder">前序</button><button class="btn_postOrder">后序</button><button class="btn_wideTravsal">层次</button><button class="btn_search">搜索</button><button class="btn_add">增加</button><button class="btn_delete">删除</button></p>
+	 <p>搜索框<input type="text" placeholder="请输入要搜索的词..."></p>
+	 <p>增加框<input type="text" placeholder="请输入要添加的内容..."></p>
+	<div class="root">根
+		<div>大
+			<div>小
+				<div>G</div>
+				<div>Q</div>
+				<div>Q</div>
+			</div>
+			<div>世
+				<div>N</div>
+				<div>Y</div>
+				<div>Q</div>
+			</div>
+			<div>界
+				<div>L</div>
+				<div>H</div>
+				<div>I</div>
+			</div>
+		</div>
+		<div>君
+			<div>不
+				<div>S</div>
+				<div>T</div>
+				<div>R</div>
+			</div>
+			<div>见
+				<div>A</div>
+				<div>N</div>
+				<div>G</div>
+			</div>
+			<div>黄
+				<div>E</div>
+				<div>R</div>
+				<div>.</div>
+			</div>
+		</div>
+		<div>黄
+			<div>河
+				<div>春</div>
+				<div>花</div>
+				<div>秋</div>
+			</div>
+			<div>之
+				<div>月</div>
+				<div>何</div>
+				<div>时</div>
+			</div>
+			<div>水
+				<div>了</div>
+				<div>,</div>
+				<div>往</div>
+			</div>
+		</div>
+		<div>天
+			<div>上
+				<div>事</div>
+				<div>知</div>
+				<div>多</div>
+			</div>
+			<div>来
+				<div>少</div>
+				<div>,</div>
+				<div>小</div>
+			</div>
+			<div>奔
+				<div>楼</div>
+				<div>昨</div>
+				<div>夜</div>
+			</div>
+		</div>
+		<div>流
+			<div>到
+				<div>又</div>
+				<div>东</div>
+				<div>风</div>
+			</div>
+			<div>海
+				<div>故</div>
+				<div>国</div>
+				<div>不</div>
+			</div>
+			<div>不
+				<div>回</div>
+				<div>首</div>
+				<div>月</div>
+			</div>
+		</div>
+		<div>复
+			<div>返
+				<div>明</div>
+				<div>中</div>
+				<div>.</div>
+			</div>
+			<div>将
+				<div>只</div>
+				<div>是</div>
+				<div>朱</div>
+			</div>
+			<div>进
+				<div>颜</div>
+				<div>改</div>
+				<div>君</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		var treeNodes = [];
+		var root = document.querySelector('.root');
+		var isComplete = true;
+		var isFind = false;
+		var divs = document.getElementsByTagName('div');
+	
+
+		for(var i = 0;i < divs.length;i ++){
+			divs[i].style.background = '#fff';
+			divs[i].addEventListener('click', function(e){
+				e.stopPropagation();
+				if(this.style.background != 'aqua'){
+					this.style.background = 'aqua';
+					for(var j = 0;j < divs.length;j ++){
+						if(divs[j] != this){
+							divs[j].style.background = '#fff';
+						}
+					}
+				}else{
+					this.style.background = '#fff';
+				}
+			});
+		}
+		//去除前后空格
+		function trim(str){ 
+		  	return str.replace(/(^\s*)|(\s*$)/g, ""); 
+		}
+
+		function inital(){
+			treeNodes = [];
+			isComplete = true;
+			isFind = false;
+			divs = document.getElementsByTagName('div');
+
+			for(var i = 0;i < divs.length;i ++){
+				divs[i].style.background = '#fff';
+			}
+		}
+
+		function show(){
+			var i = 0;
+			isComplete = false;
+
+			var timer = setInterval(function(){
+				if(i == 0){
+					treeNodes[i].style.background = 'rgb(255,213,79)';
+				}else if(i > 0 && i < treeNodes.length){
+					treeNodes[i].style.background = 'rgb(255,213,79)';
+					treeNodes[i - 1].style.background = '#fff';
+				}else{
+					treeNodes[treeNodes.length - 1].style.background = '#fff';
+					isComplete = true;
+					clearInterval(timer);
+				}
+				i ++;
+			}, 100);
+		}
+
+		function search(){
+			var i = 0;
+			var con = document.getElementsByTagName('input')[0].value;
+			var reg = new RegExp('^' + con + '$','g');
+			isComplete = false;
+			var timer = setInterval(function(){
+				if(i == 0){
+					if(reg.test(trim(treeNodes[i].firstChild.nodeValue))){
+						treeNodes[i].style.background = 'lime';
+						treeNodes[i].style.color = '#fff';
+						isFind = true;
+					}else{
+						treeNodes[i].style.background = 'rgb(255,213,79)';
+						treeNodes[i].style.color = '#fff';
+					}
+				}else if(i > 0 && i < treeNodes.length){
+					if(reg.test(trim(treeNodes[i].firstChild.nodeValue))){
+							treeNodes[i].style.background = 'lime';
+							treeNodes[i].style.color = '#fff';
+							treeNodes[i - 1].style.background = '#fff';
+							treeNodes[i - 1].style.color = 'black';
+							isFind = true;
+					}else{
+						if(reg.test(trim(treeNodes[i - 1].firstChild.nodeValue))){
+							treeNodes[i].style.background = 'rgb(255,213,79)';
+							treeNodes[i].style.color = '#fff';
+							treeNodes[i - 1].style.background = 'lime';
+							treeNodes[i - 1].style.color = '#fff';
+						}else{
+							treeNodes[i].style.background = 'rgb(255,213,79)';
+							treeNodes[i].style.color = '#fff';
+							treeNodes[i - 1].style.background = '#fff';
+							treeNodes[i - 1].style.color = 'black';
+						}
+					
+					}
+				}else{
+					if(treeNodes[treeNodes.length - 1].style.background == 'lime'){
+						treeNodes[treeNodes.length - 1].style.background = 'lime';
+						treeNodes[treeNodes.length - 1].style.color = '#fff';
+					}else{
+						treeNodes[treeNodes.length - 1].style.background = '#fff';
+					}
+					isComplete = true;
+					clearInterval(timer);
+					if(isFind){
+						alert('已找到');
+					}else{
+						alert('找不到');
+					}
+
+				}
+
+				i ++;
+			}, 100);
+		}
+
+		
+
+		function preOrder(node){
+			if(node){
+				treeNodes.push(node);
+				var num = node.children;
+				for(var i = 0;i < num.length;i ++){
+					postOrder(num[i]);
+				}
+			}
+		}
+
+		function postOrder(node){
+			if(node){
+				var num = node.children;
+				for(var i = 0;i < num.length;i ++){
+					postOrder(num[i]);
+				}
+				treeNodes.push(node);
+			}
+		}
+
+		function wideTraverse(node){
+			var que = [];
+			que.push(node);
+			var num;
+			while(que.length){
+				node = que.shift();
+				treeNodes.push(node);
+
+				num = node.children;
+				for(var i = 0;i < num.length;i ++){
+					que.push(num[i]);
+				}
+			}
+		}
+
+		function btn_preOrder(){
+			document.querySelector('.btn_preOrder').addEventListener('click',function(){
+				if(isComplete){
+					inital();
+					preOrder(root);
+					show();
+				}else{
+					alert('动画正在进行中');
+				}
+				
+			});
+		}
+
+		function btn_postOrder(){
+			document.querySelector('.btn_postOrder').addEventListener('click',function(){
+				if(isComplete){
+					inital();
+					postOrder(root);
+					show();
+				}else{
+					alert('动画正在进行中');
+				}
+			});
+		}
+
+		function btn_wideTravsal(){
+			document.querySelector('.btn_wideTravsal').addEventListener('click',function(){
+				if(isComplete){
+					inital();
+					wideTraverse(root);
+					show();
+				}else{
+					alert('动画正在进行中');
+				}
+			});
+		}
+
+		function btn_search(){
+			document.querySelector('.btn_search').addEventListener('click',function(){
+				if(isComplete){
+					if(!document.getElementsByTagName('input')[0].value.length){
+						alert('搜索内容不得为空');
+					}else{
+						inital();
+						wideTraverse(root);
+						search();
+					}
+				}else{
+					alert('动画正在进行中');
+				}
+			});
+		}
+
+		function btn_delete(){
+			document.querySelector('.btn_delete').addEventListener('click',function(){
+				for(var i = 0;i < divs.length;i ++){
+					if(divs[i].style.backgroundColor == 'aqua'){
+						divs[i].parentNode.removeChild(divs[i]);
+					}
+				}
+			});
+		}
+
+		function btn_add(){
+			var count =  0;
+			document.querySelector('.btn_add').addEventListener('click', function(){
+				var text = document.getElementsByTagName('input')[1].value;
+				if(text.length){
+					var newDiv = document.createElement('div');
+					newDiv.className = 'root';
+					newDiv.addEventListener('click',function(e){
+						e.stopPropagation();
+						if(this.style.background != 'aqua'){
+							this.style.background = 'aqua';
+							for(var j = 0;j < divs.length;j ++){
+								if(divs[j] != this){
+									divs[j].style.background = '#fff';
+								}
+							}
+						}else{
+							this.style.background = '#fff';
+						}
+					});
+					newDiv.append(text);
+					for(var i = 0;i < divs.length;i ++){
+						if(divs[i].style.backgroundColor == 'aqua'){
+							divs[i].appendChild(newDiv);
+							count ++;
+						}
+						if(i == divs.length -1 && count == 0){
+							alert('请先选择节点');
+						}
+					}
+				}else{
+					alert('内容不得为空');
+				}
+				
+			});
+		}
+
+
+		window.addEventListener('load', function(){
+			 btn_preOrder();
+			 btn_postOrder();
+			 btn_wideTravsal();
+			 btn_search();
+			 btn_delete();
+			 btn_add();
+		});
+
+	</script>
+</body>
+</html>
