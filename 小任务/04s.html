@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding:0;
+			box-sizing: border-box;
+		}
+
+		body{
+			background: #cecece;
+		}
+	
+		.layout{
+			position: absolute;
+			top:50%;
+			left:50%;
+			height: 500px;
+			width:1000px;
+			margin-left: -500px;
+			margin-top:-250px;
+
+		}
+
+		#tool{
+			width: 500px;
+			margin:0 auto;
+		}
+
+	
+		#tool input{
+			height: 50px;
+			width: 300px;
+			border-radius: 25px;
+			outline:none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			text-indent: 30px;
+		}
+
+		#tool p{
+			display: flex;
+			justify-content: center;
+			/*margin-left:90px;*/
+		}
+
+		#tool button{
+			height: 50px;
+			width: 60px;
+			display: inline-block;
+		}
+
+		main{
+			display: flex;
+			width: 1000px;
+			height: 150px;
+			align-items: flex-end;
+			margin:0 auto;
+			border: 1px solid white;
+			border-radius: 10px;
+		}
+
+		
+	</style>
+</head>
+<body>
+	<div class="layout">
+		<div id="tool">
+			<p><input type="text" placeholder="please enter a number 1~100"></p>
+			<p><button id="left_in">左进</button>
+			<button id="right_in">右进</button>
+			<button id="left_out">左出</button>
+			<button id="right_out">右出</button>
+			<button id="sort">排序</button></p>
+		</div>
+		<main></main>
+	</div>
+	
+	<script type="text/javascript">
+		(function(){
+
+			document.getElementById('right_in').addEventListener('click', function(){
+				var main = document.getElementsByTagName('main')[0];
+				var text = document.getElementsByTagName('input')[0].value;
+				var num = Number(text);
+				if(main.children.length > 60){
+					alert('最大添加60个');
+				}else{
+					if(text.length === 0 || isNaN(num) || num < 10 || num > 100){
+						alert("非法输入");
+					}else{
+						var sub = document.createElement('div');
+						sub.style.display = 'inline-block';
+						sub.style.height = num + 'px';
+						sub.style.width = '30px';
+						sub.style.background = '-webkit-linear-gradient(#00FFE8,#0588FF)';
+						sub.style.border = '1px solid #cccc';
+						sub.className = 'hhh';
+						main.appendChild(sub);
+						var num1 = parseInt(sub.style.height);
+
+						sub.addEventListener('click', function(){
+							main.removeChild(sub);
+						});
+						sub.addEventListener('mouseover', function(){
+							sub.style.background = '#ccc';
+							sub.style.height = '0px';
+							sub.style.transition = 'all 1s ease';
+						});
+						sub.addEventListener('mouseout', function(){
+							sub.style.background = '-webkit-linear-gradient(#00FFE8,#0588FF)';
+							sub.style.height = num1 + 'px';
+							sub.style.transition = 'all 1s ease';
+						});
+					}
+				}
+				
+			})
+
+			document.getElementById('left_in').addEventListener('click', function(){
+				var main = document.getElementsByTagName('main')[0];
+				var text = document.getElementsByTagName('input')[0].value;
+				var num = Number(text);
+				if(main.children.length > 60){
+					alert('最大添加60个');
+				}else{
+					if(text.length ===0 || isNaN(num) || num < 10 || num > 100){
+						alert("非法输入");
+					}else{
+						var sub = document.createElement('div');
+						sub.style.display = 'inline-block';
+						sub.style.height = num + 'px';
+						sub.style.width = '30px';
+						sub.style.background = '-webkit-linear-gradient(#00FFE8,#0588FF)';
+						sub.style.border = '1px solid #cccc';
+						sub.className = 'hhh';
+						main.insertBefore(sub,main.children[0]);
+						var num1 = parseInt(sub.style.height);
+
+						sub.addEventListener('click', function(){
+							main.removeChild(sub);
+						});
+						sub.addEventListener('mouseover', function(){
+							sub.style.background = '#ccc';
+							sub.style.height = '0px';
+							sub.style.transition = 'all 1s ease';
+						});
+						sub.addEventListener('mouseout', function(){
+							sub.style.background = '-webkit-linear-gradient(#00FFE8,#0588FF)';
+							sub.style.height = num1 + 'px';
+							sub.style.transition = 'all 1s ease';
+						});
+					}
+				}
+				
+			})
+
+			document.getElementById('left_out').addEventListener('click', function(){
+				var main = document.getElementsByTagName('main')[0];
+				var subs = main.children;
+				if(main.children.length > 0){
+					main.removeChild(subs[0]);
+				}else{
+					alert('清空完毕');
+				}
+				
+			})
+
+			document.getElementById('right_out').addEventListener('click', function(){
+				var main = document.getElementsByTagName('main')[0];
+				var subs = main.children;
+				if(main.children.length > 0){
+					main.removeChild(subs[main.children.length - 1]);
+				}else{
+					alert('清空完毕');
+				}
+				
+			})
+
+			document.getElementById('sort').addEventListener('click', function(){
+				var temp = '';
+				var main = document.getElementsByTagName('main')[0];
+				var subs = main.children;
+				for(var i = 0;i < subs.length - 1;i++){
+					for(var j = i + 1;j< subs.length;j++){
+						//不能用Number(subs[i].innerHTML)来判断,因为你虽然高度交换了,但是innerHTML还是没有交换的
+						//用innerHTML作为指标会错乱,比如你高度是320px了,但是你内容还是20,这么写相当于认为它是20px,而不是320px
+						if(parseInt(subs[i].style.height) > parseInt(subs[j].style.height)){
+							temp = subs[i].style.height;
+							subs[i].style.height = subs[j].style.height;
+							subs[j].style.height = temp;
+						}
+					}
+				}
+			})
+
+		})();
+	</script>
+</body>
+</html>

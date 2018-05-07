@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>07</title>
+  <style>
+    *,::after,::before{
+      margin:0;    
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .root{
+      display: flex;
+      flex:row wrap;
+      justify-content: space-around;
+      align-items: center;
+      height: 400px;
+      width: 600px;
+      margin:10px auto;
+      border: 2px solid black;
+    }
+
+    .root div{
+      display: flex;
+      flex:row wrap;
+      justify-content: space-around;
+      align-items: center;
+      width: 40%;
+      height: 80%;
+      border: 2px solid black;
+    }
+
+    p{
+      display: flex;
+      height:50px;
+      width: 600px;
+      flex:row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      margin:50px auto;
+    }
+
+    p button{
+      -webkit-appearance:none;
+      width: 130px;
+      height: 80px;
+      background:-webkit-linear-gradient(#96C120,#DADDD8);
+      font-size:50px;
+    }
+
+  </style>
+</head>
+<body>
+  <p><button class="btn-preOrder">前序</button><button class="btn-inOrder">中序</button><button class="btn-postOrder">后序</button><button class="btn-wideTravsal">层次</button></p>
+  <div class="root">
+    <div>
+      <div>
+        <div></div>
+        <div></div>
+      </div>
+      <div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+    <div>
+      <div>
+        <div></div>
+        <div></div>
+      </div>
+      <div>
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </div>
+
+<script type="text/javascript">
+    //全局变量
+    var treeNodes = [];   //存放遍历的树节点
+    var root = document.querySelector('.root');
+    var statuss = false;   //动画是否运行中
+    //初始化
+    function initial(){
+      treeNodes = [];
+      var nodes = document.getElementsByTagName('div');
+      for(var i = 0;i < nodes.length;i++){
+          nodes[i].style.background = '#fff';
+      }
+    }
+    //显示动画
+    function showNode(){
+      var i = 0;
+      var timer =  setInterval(function(){
+       if(i == 0){
+          treeNodes[i].style.background = 'aqua';
+        }else if(i > 0 && i < treeNodes.length){
+            treeNodes[i].style.background = 'aqua';
+            treeNodes[i - 1].style.background = '#fff';
+        }else{
+          statuss = false;
+          clearInterval(timer);
+        }
+        i ++;
+      },500);
+    }
+
+    //中序
+    function inOrder(node){
+      if(node){
+        inOrder(node.firstElementChild);
+        treeNodes.push(node);         //遍历到的节点压入栈
+        inOrder(node.lastElementChild);
+      }
+    }
+
+    //前序
+     function preOrder(node){
+      if(node){
+        treeNodes.push(node);
+        preOrder(node.firstElementChild);
+        preOrder(node.lastElementChild);
+      }
+    }
+
+    //后序
+     function postOrder(node){
+      if(node){
+        postOrder(node.firstElementChild);
+        postOrder(node.lastElementChild);
+        treeNodes.push(node);
+      }
+    }
+    //层次遍历
+    function wideTraversal(node){
+       var que = [];            //用队列实现
+       que.push(node); 
+       while(que.length !== 0) {
+        node = que.shift(); //把数组的第一个元素从其中删除，并返回第一个元素的值
+        treeNodes.push(node);
+        if(node.firstElementChild) 
+          que.push(node.firstElementChild); 
+        if(node.lastElementChild) 
+          que.push(node.lastElementChild);
+       }
+    }
+
+    function btn_inOrder(){
+       document.querySelector('.btn-inOrder').addEventListener('click', function(e){
+        if(!statuss){
+            initial();
+            inOrder(root);
+            statuss = true;
+            showNode();
+        }else{
+             alert('动画播放中..');
+        }
+       
+      });
+    }
+
+     function btn_preOrder(){
+       document.querySelector('.btn-preOrder').addEventListener('click', function(){
+      if(!statuss){
+            initial();
+            preOrder(root);
+            statuss = true;
+            showNode();
+        }else{
+             alert('动画播放中..');
+        }
+      });
+    }
+
+     function btn_postOrder(){
+       document.querySelector('.btn-postOrder').addEventListener('click', function(){
+       if(!statuss){
+            initial();
+            postOrder(root);
+            statuss = true;
+            showNode();
+        }else{
+             alert('动画播放中..');
+        }
+      });
+    }
+
+     function  bth_wideTravsal(){
+       document.querySelector('.btn-wideTravsal').addEventListener('click', function(){
+       if(!statuss){
+            initial();
+            wideTraversal(root);
+            statuss = true;
+            showNode();
+        }else{
+             alert('动画播放中..');
+        }
+      });
+    }
+
+    window.onload = function(){
+        btn_inOrder();
+        btn_preOrder();
+        btn_postOrder();
+        bth_wideTravsal();
+    }
+    
+  </script>
+</body>
+</html>

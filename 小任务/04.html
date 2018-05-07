@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		body{
+			margin:50px 0 0 50px;
+			width:1000px;
+
+		}
+		/*@keyframes left{
+			0%{
+				position: relative;
+				top:25px;
+				left:0px;
+				width: 100px;
+				height: 100px;
+				transform:rotate(0deg);
+			}
+			100%{
+				position: relative;
+				top:25px;
+				left:10%;
+				width: 100px;
+				height: 100px;
+				transform:rotate(360deg);
+			}
+		}
+		*/
+
+		/*@keyframes higher{
+			0%{
+				width: 30px;
+				height: 0px;
+			}
+			100%{
+				width: 30px;
+				height: 100px;
+			}
+		}*/
+		
+		.tool{
+			position: absolute;
+			height: 300px;
+			width: 500px;
+			top:50%;
+			left:50%;
+			margin-left: -250px;
+			margin-top: -150px;
+			z-index: 0px;
+		}
+
+		.tool input{
+			width: 300px;
+			height: 50px;
+			text-indent: 30px;
+			border-radius: 150px;
+			outline: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			font-size: 25px;
+			font-family: 'SimHei';
+			margin:70px 0 0 90px;
+		}
+		.tool button{
+			width: 100px;
+			height: 50px;
+			background: darkred;
+			outline: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			color:white;
+			font-size: 20px;
+			font-family: 'SimHei';
+			margin-left: 90px;
+		}
+		#flex{
+			position: relative;
+			display: flex;
+			width:calc(60*30px);
+			height: 300px;
+			border: 1px solid #cecece;
+			background:-webkit-linear-gradient(#00FFE8,#0588FF);
+			flex-direction: row;
+			justify-content: center;
+			align-items: flex-end;
+			margin-top: 50px;
+			z-index: 1;
+		}
+	</style>
+</head>
+<body>
+	<div class="tool">
+		<input id="str" type="text"  placeholder="请输入...">
+		<p><button id="left_enter">左侧进</button><button id="right_enter">右侧进</button></p>
+		<p><button id="left_out">左侧出</button><button id="right_out">右侧出</button></p>
+		<p><button id="sort">排序</button></p>
+	</div>
+	<div id="flex"></div>
+	<script type="text/javascript">
+		(function(){
+
+			var box_orderl = 500;		//[...,499]
+			var box_orderr = 499;		//[500,..]
+			var box_orderr_min = 500;
+			//左进
+			document.getElementById('left_enter').addEventListener('click',function(){
+				if(document.getElementById('flex').children.length  > 60){
+					alert('添加元素超过60个,禁止添加');
+				}else{
+					var text = document.getElementById('str').value;
+					var num = Number(text);						//转为number类型
+					if(text.length === 0 || isNaN(num) || num < 10 || num > 300){
+						alert('请输入10-300的数字');
+					}else{
+						var flexbox = document.getElementById('flex');
+						var box = document.createElement('div');
+						var animation_text = '@keyframes higher{0%{width: 30px;height: 0px;}100%{width: 30px;height:' + num + 'px;}}';
+						box.append(text);
+						document.getElementsByTagName('style')[0].append(animation_text);
+						box.setAttribute('class','left_enter');
+						box.style.height = num + 'px';
+						box.style.width = '30px';
+						box.style.border = '1px solid #cecece';
+						box.style.background = 'aqua';
+						box.style.lineHeight = num + 'px';
+						box.style.textAlign  = 'center';
+						box.style.display = 'inline-block';
+						box.style.order = --box_orderl;
+						box.setAttribute('id',box_orderl);
+						box.style.cursor = 'pointer';
+						box.style.animation = 'higher 1s ease';
+						flexbox.appendChild(box);
+						box.addEventListener('click',function(){
+							var animation_text = '@keyframes lower{0%{width: 30px;height:' + num + 'px;}100%{width: 30px;height:0px;}}';
+							document.getElementsByTagName('style')[0].append(animation_text);
+							box.style.animation = 'lower 1s ease';
+							setTimeout(function(){
+								flexbox.removeChild(box);
+							}, 1000);
+							
+						});
+					}
+				}
+			});
+			
+			//右进
+			document.getElementById('right_enter').addEventListener('click',function(){
+				if(document.getElementById('flex').children.length  > 60){
+					alert('添加元素超过60个,禁止添加');
+				}else{
+					var text = document.getElementById('str').value;
+					var num = Number(text);						//转为number类型
+					if(text.length === 0 || isNaN(num) || num < 10 || num > 300){
+						alert('请输入10-300的数字');
+					}else{
+						var flexbox = document.getElementById('flex');
+						var box = document.createElement('div');
+						var animation_text = '@keyframes higher{0%{width: 30px;height: 0px;}100%{width: 30px;height:' + num + 'px;}}';
+						box.append(text);
+						document.getElementsByTagName('style')[0].append(animation_text);
+						box.setAttribute('class','right_enter');
+						box.style.height = num + 'px';
+						box.style.width = '30px';
+						box.style.border = '1px solid #cecece';
+						box.style.background = 'aqua';
+						box.style.lineHeight = num + 'px';
+						box.style.textAlign  = 'center';
+						box.style.display = 'inline-block';
+						box.style.order = ++box_orderr;
+						box.setAttribute('id',box_orderr);
+						box.style.cursor = 'pointer';
+						box.style.animation = 'higher 1s ease';
+						flexbox.appendChild(box);
+						box.addEventListener('click',function(){
+							var animation_text = '@keyframes lower{0%{width: 30px;height:' + num + 'px;}100%{width: 30px;height:0px;}}';
+							document.getElementsByTagName('style')[0].append(animation_text);
+							box.style.animation = 'lower 1s ease';
+							setTimeout(function(){
+								flexbox.removeChild(box);
+							}, 1000);
+							
+						});
+					}
+				}
+
+			});
+
+
+			//左出
+			document.getElementById('left_out').addEventListener('click',function(){
+				var divs = document.getElementById('flex').children;
+				if(divs.length === 0){
+					alert('清空完毕');
+				}else{
+					document.getElementById('flex').removeChild(document.getElementById(box_orderl++));
+				}
+			
+			});
+			//右出
+			document.getElementById('right_out').addEventListener('click',function(){
+				var divs = document.getElementById('flex').children;
+				if(divs.length === 0){
+					alert('清空完毕');
+				}else{
+					document.getElementById('flex').removeChild(document.getElementById(box_orderl--));
+				}
+			});
+
+			//排序
+			document.getElementById('sort').addEventListener('click', function(){
+				var temp = '';
+
+				if(document.getElementsByClassName('left_enter').length > 0){
+					for(var i = box_orderl;i<= box_orderr;i ++){
+						for(var j = i + 1;j<=box_orderr;j ++){
+							if(Number(document.getElementById(i).innerHTML) > Number(document.getElementById(j).innerHTML)){
+
+								temp = document.getElementById(i).style.height;
+
+								document.getElementById(i).style.height = document.getElementById(j).style.height;
+								document.getElementById(j).style.height = temp;
+
+								
+								document.getElementById(i).innerHTML = '';
+								document.getElementById(j).innerHTML = '';
+							}
+						}
+					}
+				}
+
+
+
+				
+				
+			});
+
+
+
+
+		})();
+	</script>
+</body>
+</html>

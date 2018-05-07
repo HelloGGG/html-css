@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>05</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding:0;
+			box-sizing: border-box;
+		}
+		
+		.clearfix::afert,.clearfix::before{
+			content: "";
+			display: block;
+			clear: both;
+		}
+
+		body{
+			background: #cecece;
+		}
+		
+		.layout{
+			width: 500px;
+			margin:0 auto;
+		}
+		
+		textarea{
+			width: 500px;
+			height: 200px;
+			resize: none;
+			font-size: 30px;
+			border-radius: 10px;
+			outline:none;
+			text-indent: 30px;
+		}
+
+		input{
+			height: 50px;
+			font-size: 20px;
+			border-radius: 10px;
+			outline:none;
+			text-indent: 30px;
+		}
+		
+		button{
+			width: 50px;
+		}
+
+		main{
+			width: 500px;
+			height: 500px;
+			background: #eee;
+			border-radius: 10px;
+		}
+
+		.get{
+			color:white;			
+		}
+	</style>
+</head>
+<body>
+	<div class="layout">
+		<header class="tools">
+			<textarea  cols="30" rows="10" placeholder="内容不得为空"></textarea>
+			<p><input type="text" placeholder="输入要搜素的内容"></p>
+			<p><button id="left_in">左进</button>
+			<button id="right_in">右进</button>
+			<button id="left_out">左出</button>
+			<button id="right_out">右出</button>
+			<button id="search">搜索</button></p>
+		</header>
+
+		<main></main>
+	</div>
+
+	<script type="text/javascript">
+		(function(){
+
+			var main = document.getElementsByTagName('main')[0];
+			var subs = main.children;
+			
+			document.getElementById('right_in').addEventListener('click', function(){
+				var text = document.getElementsByTagName('textarea')[0].value;
+				if(main.children.length > 72){
+					alert("禁止插入");
+				}else{
+					if(text.length === 0){
+						alert("内容不得为空");
+					}else{
+						var sub = document.createElement('div');
+						sub.setAttribute('style', 'width:50px; height:50px; display:inline-block; margin: 0 5px; background:-webkit-linear-gradient(#00FFE8,#0588FF); overflow:hidden;');
+						main.appendChild(sub);
+						sub.append(text);
+					}
+				}
+				
+			})
+
+			document.getElementById('left_in').addEventListener('click', function(){
+				var text = document.getElementsByTagName('textarea')[0].value;
+				if(main.children.length > 72){
+					alert("禁止插入");
+				}else{
+					if(text.length === 0){
+						alert("内容不得为空");
+					}else{
+						var sub = document.createElement('div');
+						sub.setAttribute('style', 'width:50px; height:50px; display:inline-block; margin: 0 5px; background:-webkit-linear-gradient(#00FFE8,#0588FF); overflow:hidden;');
+						main.insertBefore(sub,main.children[0]);
+						sub.append(text);
+					}
+				}
+			})
+
+			document.getElementById('left_out').addEventListener('click', function(){
+				if(subs.length > 0){
+					main.removeChild(subs[0]);
+				}else{
+					alert('清空完毕');
+				}
+			})
+
+			document.getElementById('right_out').addEventListener('click', function(){
+				if(subs.length > 0){
+					main.removeChild(subs[main.children.length - 1]);
+				}else{
+					alert('清空完毕');
+				}
+			})
+
+			document.getElementById('search').addEventListener('click', function(){
+				var text = document.getElementsByTagName('input')[0].value;
+				var reg = new RegExp("(" + text + ")", "g");  			//分组全局匹配
+				for(var i = 0;i < main.children.length;i ++){
+					var con = main.children[i].textContent || main.children[i].innerText;
+					if(reg.test(con)){
+						main.children[i].innerHTML = con.replace(reg, "<font color=red>$1</font>"); 
+					}
+				}
+			});
+
+		})();
+	</script>
+</body>
+</html>

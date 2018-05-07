@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script type="text/javascript" language="javascript">  
+    var s = "暖";  
+    //简写形式的reg不会解释变量,s就是s,不会是"暖",new regExp()中会解释
+    // var reg = new RegExp("(" + s + ")", "g");  
+    // var str = "CSDN暖枫无敌，暖枫无敌CSDN";  
+ 	var reg = new new RegExp('^君$','g' );
+    // var reg = /^君$/g;
+    alert(reg.test('君'));
+    // var newstr = str.replace(reg, "<font color=red>$1</font>");  
+    // document.write(newstr + "<br />");  
+</script> 
+</body>
+</html>
