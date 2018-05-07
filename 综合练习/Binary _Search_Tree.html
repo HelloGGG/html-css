@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+
+		*,::after,::before{
+			box-sizing: border-box;
+			margin:0;
+			padding: 0;
+		}
+
+		.layout{
+			width:800px;
+			height:400px;
+			margin:0 auto;
+			background: white;
+		}
+
+		#show,#show div{
+		  display: flex;
+		  flex-flow: row wrap;
+		  justify-content: space-around;
+		  align-items: center;
+		  background: #fff;
+		  width: 45%;
+		  height: 50%;
+		  border: 3px solid #000;
+		  border-radius: 4px;
+		}
+
+		#tools{
+			display: flex;
+			align-items: center;
+			width: 720px;
+			justify-content:space-between;
+		}
+
+		@keyframes change{
+			0%{background: white;}
+			100%{background: aqua;}
+		}
+	</style>
+</head>
+<body>
+	<div class="layout">
+		<div id="show">
+		    <div>
+		      <div>
+		        <div></div>
+		        <div></div>
+		      </div>
+		      <div>
+		        <div></div>
+		        <div></div>
+		      </div>
+		    </div>
+		    <div>
+		      <div>
+		        <div></div>
+		        <div></div>
+		      </div>
+		      <div>
+		        <div></div>
+		        <div></div>
+		      </div>
+		    </div>
+ 		</div>
+	</div>
+
+	<form id="tools">
+			<button id="preOrder">前序遍历(NLR)</button>
+			<button id="inOrder">中序遍历(LNR)</button>
+			<button id="postOrder">后序遍历(LRN)</button>
+			<button id="levelOrder">层次遍历</button>
+	</form>
+
+	<script type="text/javascript">
+
+var orderQueue = [];
+var inAnimation = false;
+alert(typeof inAnimation);
+//先序遍历
+function preOrder(root) {
+  orderQueue.push(root);
+  if (root.firstElementChild != null) 
+    preOrder(root.firstElementChild);
+  if (root.lastElementChild != null)
+    preOrder(root.lastElementChild);
+}
+
+//中序遍历
+function inOrder(root) {
+  if (root.firstElementChild != null)
+    inOrder(root.firstElementChild);
+  orderQueue.push(root);
+  if (root.lastElementChild != null)
+    inOrder(root.lastElementChild);
+}
+
+//后续遍历
+function postOrder(root) {
+  if (root.firstElementChild != null)
+    postOrder(root.firstElementChild);
+  if (root.lastElementChild !== null)
+    postOrder(root.lastElementChild);
+  orderQueue.push(root);
+}
+
+function render() {
+  if (inAnimation) {
+    alert('in animation');
+    return;
+  }
+
+  inAnimation = true;
+  var i = 0;
+  orderQueue[i].style.backgroundColor = 'blue';
+  var showRet = setInterval(function() {
+    i++;
+    if (i >= orderQueue.length) {
+      clearInterval(showRet);
+      orderQueue[orderQueue.length - 1].style.backgroundColor = '#fff';
+      inAnimation = false;
+      return;
+    }
+    orderQueue[i - 1].style.backgroundColor = '#fff';
+    orderQueue[i].style.backgroundColor = 'blue';
+  }, 500);
+}
+
+
+
+var rootNode = document.getElementById('show');
+window.onload = function() {
+  //按钮绑定事件
+  document.getElementById('preOrder').onclick = function() {
+    preOrder(rootNode);
+    render();
+  }
+
+  document.getElementById('inOrder').onclick = function() {
+    inOrder(rootNode);
+    render();
+  }
+
+  document.getElementById('postOrder').onclick = function() {
+    postOrder(rootNode);
+    render();
+  }  
+}
+	</script>
+</body>
+</html>

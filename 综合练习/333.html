@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.circle_border{
+			width: 100px;
+			height: 100px;
+			border: 2px solid rgb(255,41,140);
+			border-left-color:transparent;
+			border-radius: 50px;
+			animation:c_border 4s linear infinite;
+		}
+
+		.circle{
+		  position: absolute;
+		  width: 0;
+		  height:0;
+		  border: 40px solid;
+		  border-top-color:rgb(252,162,202);
+		  border-right-color:rgb(252,162,202);
+		  border-bottom-color:rgb(255,41,140);
+		  border-left-color:rgb(255,41,140);
+		  border-radius: 40px;
+		  transform: rotate(45deg);
+		  z-index: 0;
+		}
+		.circle_left{
+			position: relative;
+			height: 80px;
+			width: 40px;
+			border-radius: 40px 0 0 40px;
+			float: left;
+			background-color: rgb(255,41,140);
+			transform-origin: 100% 50%;
+			animation: c_left 2s linear infinite;
+			z-index: 2;
+		}
+		.circle_right{
+			position: relative;
+			height: 80px;
+			width: 40px;
+			border-radius: 0 40px 40px 0;
+			float: left;
+			background-color: rgb(252,162,202);
+			transform-origin: 0% 50%;
+			animation: c_right 2s linear infinite;
+			z-index: 1;
+		}
+
+		@keyframes c_border{
+			0%{transform: rotate(0deg);}
+			100%{transform: rotate(360deg);}
+		}
+		@keyframes c_left{
+			0%{transform: rotate(0deg);z-index:2;}
+			25%{transform: rotate(180deg);z-index:2;}
+			50%{transform: rotate(180deg);z-index:2;}
+			50.01%{transform: rotate(180deg);z-index:1;}
+			75%{transform: rotate(360deg);z-index:1;}
+			100%{transform: rotate(360deg);z-index:1;}
+		}
+		@keyframes c_right{
+			0%{transform: rotate(0deg);z-index:1;}
+			25%{transform: rotate(0deg);z-index:1;}
+			50%{transform: rotate(180deg);z-index:1;}
+			50.01%{transform: rotate(180deg);z-index:2;}
+			75%{transform: rotate(180deg);z-index:2;}
+			100%{transform: rotate(360deg);z-index:2;}
+		}
+	</style>
+	
+</head>
+<body>
+	<!-- <div class="circle_border"></div> -->
+	<!-- <div></div> -->
+	<div class="circle"></div>
+	<div class="circle_left"></div>
+	<div class="circle_right"></div>
+</body>
+</html>

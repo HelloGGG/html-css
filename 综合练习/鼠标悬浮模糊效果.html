@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <style>
+    *,::after,::before{
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    main{
+      position: relative;
+      display: flex;
+      height: 600px;
+      width: 800px;
+      margin: 0 auto;
+      /*background: url("404.png") no-repeat;*/
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    main img{
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+    }
+    main:hover img{
+      filter:blur(2px);     /*添加滤镜模糊效果*/
+    }
+
+    main .container{
+      position: relative;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: center;
+      align-items: center;
+      height: 80%;
+      width: 80%;
+      z-index: 2;
+    }
+    /*左边框*/
+    main .container:before{
+      content:"";
+      height: 0%;
+      width: 100%;
+      position: absolute;
+      top:50%;
+      left:0;
+      border:3px solid #fff;
+      border-width: 0 3px;
+    }
+    /*右边框*/
+     main .container::after{
+      content:"";
+      height: 100%;
+      width: 0%;
+      position: absolute;
+      top:0;
+      left:50%;
+      border:3px solid #fff;
+      border-width: 3px 0;
+    }
+    /*边框变长的同时向上或者向右移动*/
+    main:hover .container:before{     
+      height: 100%;
+      top:0;
+      transition:all 1s ease;
+    }
+    main:hover .container:after{
+      width: 100%;
+      left:0;
+      transition:all 1s ease;
+    }
+   
+
+    /*文字*/
+    main .container h1{
+      font-size: 80px;
+      background-image: -webkit-linear-gradient(left, #fccb90, #d57eeb 10%, #e0c3fc 20%, #8ec5fd 30%, #30cfdc 40%, #fccb90 50%, #d57eeb 60%, #e0c3fc 70%, #8ec5fd 80%, #30cfdc 90%, #fccb90);
+      background-image: -o-linear-gradient(left, #fccb90, #d57eeb 10%, #e0c3fc 20%, #8ec5fc 30%, #30cfd0 40%, #fccb90 50%, #d57eeb 60%, #e0c3fc 70%, #8ec5fc 80%, #30cfd0 90%, #fccb90);
+      background-image: linear-gradient(to right, #fccb90, #d57eeb 10%, #e0c3fc 20%, #8ec5fc 30%, #30cfd0 40%, #fccb90 50%, #d57eeb 60%, #e0c3fc 70%, #8ec5fc 80%, #30cfd0 90%, #fccb90);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      -moz-background-clip: text;
+      background-clip: text;
+      color:transparent; 
+      animation: flowlight 1s linear infinite;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    main:hover .container h1{
+        transform: translateY(0);
+        opacity: 1;
+        transition:all 1s ease;
+    }
+    @keyframes flowlight{
+      0%{
+        background-position: 0 0;
+      }
+      100%{
+        background-position: -100% 0;
+      }
+    }
+
+  </style>
+</head>
+<body>
+      <main>
+        <div class="container">
+          <h1>Hello,World!!!</h1>
+        </div>
+        <img src="404.png">
+      </main>
+</body>
+</html>

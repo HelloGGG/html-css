@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		canvas{
+			background-color: #ccc;
+			margin:100px 500px;
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+<body>
+	<canvas id="draw" width="400" height="300">canvas</canvas>
+	<script>
+		window.onload = function(e){
+			var message = '';
+			ajax({ 
+			  type:"POST", 
+			  url:"canvas.php", 
+			  dataType:"text", 
+			  data:null, 
+			  beforeSend:function(){ 
+			    //some js code 
+			  }, 
+			  success:function(msg){ 
+			    message = msg;
+			  }, 
+			  error:function(){ 
+			    console.log("error") 
+			  } 
+			})
+
+			var arr = message.split(':');
+			var hours = parseInt(arr[0]);
+			var minutes = parseInt(arr[1]);
+			var seconds = parseInt(arr[2]);
+			console(hours);
+			console(minutes);
+			console(seconds);
+
+			var draw = document.getElementsByTagName('canvas')[0];
+			var context = draw.getContext('2d');
+
+
+
+			// context.strokeStyle = 'red';
+			// context.fillStyle = '#ff0000';
+			// context.fillRect(10,10,50,50);
+			// context.strokeRect(10,10,50,50);
+			
+			// context.fillStyle = 'rgba(0,0,255,0.5)';
+			// context.strokeStyle = 'rgba(0,0,255,0.5)';
+			// context.fillRect(30,30,50,50);
+			// context.strokeRect(30,30,50,50);
+
+			// context.clearRect(40,40,10,10);
+			// var imgURL = draw.toDataURL('image/png');
+			// var img = document.createElement('img');
+			// img.src = imgURL;
+			// document.body.appendChild(img); 
+
+
+			// var time = new Date();
+			// var seconds = time.getSeconds();
+			// var minutes = time.getMinutes();
+			// var hours = time.getHours();
+		// 	if(hours > 12){
+		// 		hours = hours - 12;
+		// 	}
+		// 	//外圆			
+		// 	context.beginPath();
+		// 	context.arc(100,100,99,0,2*Math.PI,false);
+		// 	//內圆
+		// 	context.moveTo(194,100);
+		// 	context.arc(100,100,94,0,2*Math.PI,false);
+		// 	context.translate(100,100);
+		// 	// context.rotate(-Math.PI);
+		// 	//时针
+		// 	context.moveTo(0,0);
+		// 	context.lineTo(50*Math.sin(hours*Math.PI/6),-50*Math.cos(hours*Math.PI/6));
+		// 	//分针
+		// 	context.moveTo(0,0);
+		// 	context.lineTo(70*Math.sin(minutes*Math.PI/30),-70*Math.cos(minutes*Math.PI/30));
+		// 	//秒针
+		// 	context.moveTo(0,0);
+		// 	context.lineTo(90*Math.sin(seconds*Math.PI/30),-90*Math.cos(seconds*Math.PI/30));
+		// 	//刻度
+		// 	context.fillStyle = 'green';
+		// 	context.stroke();
+		// 	context.font = 'bold 14px Arial';
+		// 	context.textAlign = 'center';
+		// 	context.textBaseline = 'middle';
+		// 	context.fillText('12',0,-85);
+		// 	context.fillText('1',85*Math.sin(Math.PI/6),-85*Math.cos(Math.PI/6));
+		// 	context.fillText('2',85*Math.sin(Math.PI/3),-85*Math.cos(Math.PI/3));
+		// 	context.fillText('3',85,0);
+		// 	context.fillText('4',85*Math.sin(Math.PI/3),85*Math.cos(Math.PI/3));
+		// 	context.fillText('5',85*Math.sin(Math.PI/6),85*Math.cos(Math.PI/6));
+		// 	context.fillText('6',0,85);
+		// 	context.fillText('7',-85*Math.sin(Math.PI/6),85*Math.cos(Math.PI/6));
+		// 	context.fillText('8',-85*Math.sin(Math.PI/3),85*Math.cos(Math.PI/3));
+		// 	context.fillText('9',-85,0);
+		// 	context.fillText('10',-85*Math.sin(Math.PI/3),-85*Math.cos(Math.PI/3));
+		// 	context.fillText('11',-85*Math.sin(Math.PI/6),-85*Math.cos(Math.PI/6));
+
+		// }
+
+		function ajax(){ 
+		  var ajaxData = { 
+		    type:arguments[0].type || "GET", 
+		    url:arguments[0].url || "", 
+		    async:arguments[0].async || "true", 
+		    data:arguments[0].data || null, 
+		    dataType:arguments[0].dataType || "text", 
+		    contentType:arguments[0].contentType || "application/x-www-form-urlencoded", 
+		    beforeSend:arguments[0].beforeSend || function(){}, 
+		    success:arguments[0].success || function(){}, 
+		    error:arguments[0].error || function(){} 
+		  } 
+		  ajaxData.beforeSend(); 
+		  var xhr = createxmlHttpRequest();  
+		  xhr.responseType=ajaxData.dataType; 
+		  xhr.open(ajaxData.type,ajaxData.url,ajaxData.async);  
+		  xhr.setRequestHeader("Content-Type",ajaxData.contentType);  
+		  xhr.send(convertData(ajaxData.data));  
+		  xhr.onreadystatechange = function() {  
+		    if (xhr.readyState == 4) {  
+		      if(xhr.status == 200){ 
+		        ajaxData.success(xhr.response) 
+		      }else{ 
+		        ajaxData.error() 
+		      }  
+		    } 
+		  }  
+		} 
+		  
+		function createxmlHttpRequest() {  
+		  if (window.ActiveXObject) {  
+		    return new ActiveXObject("Microsoft.XMLHTTP");  
+		  } else if (window.XMLHttpRequest) {  
+		    return new XMLHttpRequest();  
+		  }  
+		} 
+		  
+		function convertData(data){ 
+		  if( typeof data === 'object' ){ 
+		    var convertResult = "" ;  
+		    for(var c in data){  
+		      convertResult+= c + "=" + data[c] + "&";  
+		    }  
+		    convertResult=convertResult.substring(0,convertResult.length-1) 
+		    return convertResult; 
+		  }else{ 
+		    return data; 
+		  } 
+		}
+		
+		// setInterval(function(){
+		// 	 window.location.reload();
+		// }, 1000);
+	</script>
+</body>
+</html>

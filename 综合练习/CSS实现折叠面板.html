@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding: 0;
+			box-sizing:border-box;
+		}
+
+		body{
+			background-color: #ccc;
+		}
+
+		.selection  input[type="radio"]{
+			display: none;
+		}
+
+		.selection  .replace{
+			display: inline-block;
+			width: 200px;
+			height: 40px;
+			padding-top: 8px;
+			border:1px solid #cecece;
+			background-image:-webkit-linear-gradient(top,#fff,#ccc);
+			border-radius: 5px 5px 0 0;
+		}
+
+
+		.selection  input:checked + .content{
+			transition:all 1s linear;
+			height: 50px;
+		}
+
+		.selection .content{
+			width: 200px;
+			height: 0px;
+			border:1px solid #cecece;
+			overflow: hidden;
+			background-color: #fff;
+		}
+		
+		.test{
+			position: relative;
+			left:-180px;
+			width: 200px;
+			height: 50px;
+			margin:5px 0;
+			border: 1px solid #cecece;
+			border-radius: 10px;
+			background-image: -webkit-linear-gradient(bottom,aqua,lime);
+			transition: all 1s ease-in-out;
+			cursor: pointer;
+		}
+
+		.test:hover{
+			left:-10px;
+		}
+	</style>
+</head>
+<body>
+	<form action="">
+		<div class="selection">
+			<label for="first">
+				<div class="replace">第一部分</div><input type="radio" id="first" name="tab" checked="checked">
+				<div class="content">我是第一部分</div>
+			</label>
+		</div>
+		<div class="selection">
+			<label for="second"><div class="replace">第二部分</div><input type="radio" id="second" name="tab">
+			<div class="content">我是第二部分</div></label>
+		</div>
+		<div class="selection">
+			<label for="third"><div class="replace">第三部分</div><input type="radio" id="third" name="tab">
+			<div class="content">我是第三部分</div></label>
+		</div>
+	</form>
+	<div class="test"></div>
+	<div class="test"></div>
+	<div class="test"></div>
+	<div class="test"></div>
+</body>
+</html>

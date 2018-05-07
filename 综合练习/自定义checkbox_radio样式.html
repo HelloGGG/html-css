@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>docuemnt</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		form{
+			width: 500px;
+			margin: 100px auto;
+			padding: 10px;
+			border:1px solid #ccc;
+			border-radius: 5px;
+			background-color: #fff;
+		}
+
+		.title{
+			width: 100%;
+			height: 30px;
+			background-image: -webkit-linear-gradient(45deg,#fccb90, #d57eeb 10%, #e0c3fc 20%, #8ec5fd 30%, #30cfdc 40%, #fccb90 50%, #d57eeb 60%, #e0c3fc 70%, #8ec5fd 80%, #30cfdc 90%, #fccb90);
+			background-size: 200% 100%;
+			text-indent: 20px;
+			color:#bbb;
+			padding-top: 2px;
+			animation: flow 1s linear infinite;
+		}
+		@keyframes flow{
+			0%{
+				background-position:0 0;
+			}
+			100%{
+				background-position: -100% 0;
+			}
+		}		
+
+		form p{
+			margin: 5px;
+			font-size: 20px;
+		}
+
+		#male,#female,#it,#economic,#medical,#literature{
+			display: none;
+		}
+
+		.test{
+			position: relative;
+			top:2px;
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			border:1px solid darkred;
+			border-radius: 8px;
+			margin:0 5px;
+			padding: 3px;
+			background-clip: content-box;
+		}
+
+		input:checked + span{
+			background-color:green;
+		}
+
+		input[type="text"],input[type="password"]{
+			height: 30px;
+		}
+
+		.test1{
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			border:1px solid red;
+			padding: 3px;
+			margin:0 5px;
+			background-clip:content-box;
+		}
+
+		label{
+			cursor:pointer;
+		}
+
+	</style>
+</head>
+<body>
+	<form action="#">
+		<div class="title">注册</div>
+		<p>昵称: <input type="text" placeholder=""></p>
+		<p>密码: <input type="password" placeholder=""></p>
+		<p>
+			<label for="male">
+				性别: <input  id="male" type="radio" name="sex" value="male" checked="checked"><span class="test"></span>男
+			</label>
+			<label for="female">
+				<input  id="female" type="radio" name="sex" value="female"><span class="test"></span>女
+			</label>
+		</p>
+		<p>
+			兴趣: <label for="it"><input id="it" type="checkbox" name="interest"><span class="test1"></span>IT</label>
+				  <label for="economic"><input id="economic" type="checkbox" name="interest"><span class="test1"></span>金融</label>
+				  <label for="medical"><input id="medical" type="checkbox"  name="interest"><span class="test1"></span>医学</label>
+				  <label for="literature"><input id="literature" type="checkbox"  name="interest"><span class="test1"></span>文学</label>
+		</p>
+	</form>
+</body>
+</html>

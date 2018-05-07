@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task05</title>
+	<style>
+		*,::after,::before{
+			margin:0;
+			padding: 0;
+			box-sizing: border-box;
+			font-size:20px;
+		}
+		body{
+		}
+		button{
+			width: 200px;
+			height: 50px;
+			outline: none;
+			background: #ccc;
+			text-align: center;
+		}
+		/*遮罩层*/
+		.back{
+			display: block;
+			position: fixed;
+			left: 0;				/*不设置宽和高,top,left,right,bottom都设为0,宽高会自适应,铺满全屏*/
+			right: 0;
+			top: 0;
+			bottom: 0;
+			background: #cecece;
+			opacity: 0.6;
+			z-index: 999;
+		}
+		/*对话框*/
+		.dialog{
+			display: block;
+			position: absolute;
+			top:35%;
+			left:35%;
+			width: 500px;
+			border: 1px solid #ccc;
+			background: white;
+			border-radius: 5px;
+			z-index: 1000;
+		}
+
+		.dialog_title{
+			width: 100%;
+			height: 50px;
+			background: rgb(51,133,255);
+			text-indent: 20px;
+			padding-top:10px;
+			/*border-radius: 5px 5px 0 0;*/
+			cursor: move;
+		}
+		
+		.dialog_content{
+			width: 100%;
+			height: 250px;
+			padding: 20px;
+			background: white;
+		}
+
+		.dialog_content p{
+			margin:20px;
+		}
+
+		.dialog_content p input{
+			width: 300px;
+			height: 50px;
+			margin-left: 10px;
+			border-radius: 5px;
+			text-indent: 10px;
+		}
+		
+		.resize{
+			position: absolute;
+			bottom:0;					/*一直位于右下角*/
+			right:0;
+			width: 0;
+			height: 0;
+			border-bottom: 10px solid #ccc;
+			border-left:10px solid transparent;
+			cursor:nw-resize;
+		}
+
+		input[type="submit"],input[type="button"]{
+			height:40px;
+			width: 80px;
+			margin-top: 10px;
+			text-align: center;
+			background: rgb(51,133,255);
+			border-radius: 5px;
+			cursor: pointer;
+			outline: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+
+		input[type="submit"]{
+			margin-left: 280px;
+		}
+
+	</style>
+</head>
+<body>
+	<div><button>点我弹出对话框</button></div>
+	<!-- 遮罩层 -->
+	<div class="back"></div>
+	<!-- 对话框 -->
+	<form action="#" class="dialog">
+		<div class="dialog_title">会员登录</div>
+		<div class="dialog_content">
+			<p>用 户:<input type="text" name="user" placeholder="请输入用户名"></p>
+			<p>密 码:<input type="text" name="password" placeholder="请输入密码"></p>
+			<input type="submit" name="submit" value="确认">
+			<input type="button" name="cancel" value="取消">
+		</div>
+		<div class="resize"></div>
+	</form>
+	<script type="text/javascript">
+		//全局变量
+		var dialog = document.getElementsByClassName('dialog')[0];
+		var back = document.getElementsByClassName('back')[0];
+		var dialog_title = document.getElementsByClassName('dialog_title')[0];
+		var resizeBlock = document.getElementsByClassName('resize')[0];
+		var defaultW = dialog.offsetWidth;			//初始对话框高度
+		var defaultH = dialog.offsetHeight;
+		//显示对话框和遮罩层
+		function show_back_dialog(){
+			dialog.style.display = 'block';
+			back.style.display = 'block';
+		}
+		//隐藏对话框和遮罩层
+		function hidden_back_dialog(){
+			dialog.style.display = 'none';
+			back.style.display = 'none';
+		}
+		//绑定弹出按钮事件
+		function pop_dialog(){
+			document.getElementsByTagName('button')[0].addEventListener('click', function(){
+				show_back_dialog();
+				
+			});
+		}
+		//绑定取消按钮和遮罩层事件
+		function cancel_dialog(){
+			document.getElementsByName('cancel')[0].addEventListener('click', function(){
+				 hidden_back_dialog();
+			});
+			back.addEventListener('click', function(){
+				 hidden_back_dialog();
+			});
+		}
+		//绑定提交按钮事件
+		function submit_dialog(){
+			document.getElementsByName('submit')[0].addEventListener('click', function(){
+				alert('登录成功');
+				 hidden_back_dialog();
+			});
+		}
+		//拖拽
+		function drag(){
+			//给标题绑定鼠标按下事件
+			dialog_title.onmousedown = function(e){
+				var pageX = e.clientX + document.documentElement.scrollLeft;
+				var pageY = e.clientY + document.documentElement.scrollTop;
+				var innerX = pageX - dialog.offsetLeft;
+				var innerY = pageY - dialog.offsetTop;
+				//事件委托,冒泡到document,由document替dialog_title执行
+				document.onmousemove = function(e){
+					var moveX = e.clientX + document.documentElement.scrollLeft;;
+					var moveY = e.clientY + document.documentElement.scrollTop;;
+					var dialogX = moveX - innerX;
+					var dialogY = moveY - innerY;
+					dialog.style.left = dialogX + 'px';		//通过left,top,重新定位
+					dialog.style.top = dialogY + 'px';
+					window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+				}
+			}
+			
+			document.onmouseup = function(){
+				document.onmousemove = null;
+			}
+		}
+		//拉伸
+		function resize(){
+			resizeBlock.onmousedown = function(e){
+				var event = e || window.event;
+				//获取鼠标当前坐标
+				var pageX = event.clientX + document.documentElement.scrollLeft;
+				var pageY = event.clientY + document.documentElement.scrollTop;
+				//获取当前对话框的宽和高
+				var dialogW = dialog.offsetWidth;
+				var dialogH = dialog.offsetHeight;
+				document.onmousemove = function(e){
+					var event = e || window.event;
+					var pageXX = event.clientX + document.documentElement.scrollLeft;;
+					var pageYY = event.clientY + document.documentElement.scrollTop;
+					if( dialogH + (pageYY - pageY) - defaultH > 0 && dialogW + (pageXX - pageX) - defaultW > 0){
+						dialog.style.height = dialogH + (pageYY - pageY) + 'px';		// (pageYY - pageY)增加的高度
+						dialog.style.width = dialogW + (pageXX - pageX) + 'px';			// (pageXX - pageX)增加的宽度
+						window.getSelection().removeAllRanges();
+					}
+					
+				}
+			}
+
+			document.onmouseup = function(){
+				document.onmousemove = null;
+			}
+		}
+		//页面加载完成后,调用回调函数代码
+		window.addEventListener('load', function(){
+			pop_dialog();
+			cancel_dialog();
+			submit_dialog();
+			drag();
+			resize();
+		});
+	</script>
+</body>
+</html>

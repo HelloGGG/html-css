@@ -1,0 +1,253 @@
+*,::after,::before{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.clearfix::after,.clearfix::before{
+	content: "";
+	display: block;
+	clear: both;
+}
+
+.layout{
+	height: 500px;
+	width: 500px;
+	margin: 50px auto;
+}
+
+table:nth-of-type(1){
+	margin-left: 45px; 
+}
+
+table:nth-of-type(2){
+	float: left;
+}
+
+table:nth-of-type(3){
+	border:2px solid black;
+	float: left;
+}
+
+table:nth-of-type(1),table:nth-of-type(2){
+	border:none;
+}
+
+table:nth-of-type(1) td,table:nth-of-type(2) td{
+	border:none;
+}
+
+td{
+	width: 45px;
+	height: 45px;
+	border:1px solid #cecece;
+	text-align: center;
+}
+
+.layout p:nth-of-type(1) .command{
+	width: 200px;
+	height: 50px;
+	border-radius: 10px;
+	text-indent: 30px;
+	font-size: 20px;
+	margin: 10px 0 0 50px;
+}
+
+#run{
+	width: 100px;
+	height: 50px;
+	border-radius: 3px;
+	background: aqua;
+	margin-left: 10px;
+	font-size: 20px;
+	cursor: pointer;
+} 
+
+@keyframes move_top{
+	0%{
+		position: relative;
+		top:45px;
+	}
+	100%{
+		position: relative;
+		top:0px;
+	}
+}
+@keyframes move_left{
+	0%{
+		position: relative;
+		left:45px;
+	}
+	100%{
+		position: relative;
+		left:0px;
+	}
+}
+@keyframes move_right{
+	0%{
+		position: relative;
+		left:-45px;
+	}
+	100%{
+		position: relative;
+		left:0px;
+	}
+}
+@keyframes move_bottom{
+	0%{
+		position: relative;
+		top:-45px;
+	}
+	100%{
+		position: relative;
+		top:0px;
+	}
+}
+
+@keyframes turn_back1{
+	0%{
+		transform: rotate(-180deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+@keyframes turn_back2{
+	0%{
+		transform: rotate(-180deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+
+@keyframes turn_right1{
+	0%{
+		transform: rotate(-90deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+@keyframes turn_right2{
+	0%{
+		transform: rotate(-90deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+@keyframes turn_right3{
+	0%{
+		transform: rotate(-90deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+@keyframes turn_right4{
+	0%{
+		transform: rotate(-90deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+
+@keyframes turn_left1{
+	0%{
+		transform: rotate(90deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+@keyframes turn_left2{
+	0%{
+		transform: rotate(90deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+@keyframes turn_left3{
+	0%{
+		transform: rotate(90deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+@keyframes turn_left4{
+	0%{
+		transform: rotate(90deg);
+	}
+	100%{
+		transform: rotate(0deg);
+	}
+}
+
+.red_blue{
+	width: 44px;
+	height: 44px;
+	background: red;
+}
+/*活动块四个样式*/
+.top{
+	border-top:10px solid blue;
+}
+.anim_top{
+	animation:move_top 1s ease;
+}
+.bottom{
+	border-bottom:10px solid blue;
+}
+.anim_bottom{
+	animation:move_bottom 1s ease;
+}
+.left{
+	border-left:10px solid blue;
+}
+.anim_left{
+	animation:move_left 1s ease;
+}
+.right{
+	border-right:10px solid blue;
+}
+.anim_right{
+	animation:move_right 1s ease;
+}
+
+/*转换方向*/
+.turn_left1{
+	animation:turn_left1 1s ease;
+}
+.turn_left2{
+	animation:turn_left2 1s ease;
+}
+.turn_left3{
+	animation:turn_left3 1s ease;
+}
+.turn_left4{
+	animation:turn_left4 1s ease;
+}
+
+.turn_right1{
+	animation:turn_right1 1s ease;
+}
+.turn_right2{
+	animation:turn_right2 1s ease;
+}
+.turn_right3{
+	animation:turn_right3 1s ease;
+}
+.turn_right4{
+	animation:turn_right4 1s ease;
+}
+
+.turn_back1{
+	animation:turn_back1 1s ease;
+}
+.turn_back2{
+	animation:turn_back2 1s ease;
+}

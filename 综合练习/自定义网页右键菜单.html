@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body{
+			background-color: #cecece;
+		}
+
+		ul{	
+			position: absolute;
+			display: none;
+			list-style: none;
+		}
+
+		li{
+			display: block;
+			height: 30px;
+			width: 100px;
+			padding-top: 3px;
+			background-color: #fff;
+			text-align: center;
+			cursor: pointer;
+		}
+
+		li:hover{
+			background-color: #bbb;
+		}
+	</style>
+</head>
+<body>
+	<ul>
+		<li>上</li>
+		<li>下</li>
+		<li>左</li>
+		<li>右</li>
+	</ul>
+
+	<script type="text/javascript">
+		var ul = document.getElementsByTagName('ul')[0];
+		var li = document.getElementsByTagName('li');
+
+		document.addEventListener('contextmenu', function(e){
+			e.preventDefault();				//阻止默认菜单弹出
+			var pageX = e.clientX + document.documentElement.scrollLeft;
+			var pageY = e.clientY + document.documentElement.scrollLeft;
+			ul.style.display = 'block';
+			ul.style.top = pageY + 'px';
+			ul.style.left = pageX + 'px';
+			window.getSelection().removeAllRanges();
+		});
+
+		document.addEventListener('click', function(){
+			ul.style.display = 'none';
+		});
+
+		ul.addEventListener('click', function(e){
+			var e = window.e || e; 					//兼容IE
+			var target = e.target || e.srcElement;
+			for(var i = 0;i < li.length;i++){
+				if(target == li[i]){
+					switch(i){
+						case 0:alert('上');break;
+						case 1:alert('下');break;
+						case 2:alert('左');break;
+						case 3:alert('右');break;
+					}
+				}
+			}
+		})
+		
+		ul.onmousemove = function(){
+			window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty();
+		}
+	</script>
+</body>
+</html>

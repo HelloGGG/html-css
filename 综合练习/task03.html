@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task03</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		
+		p{
+			width: 265px;
+			font-size: 20px;
+			margin: 0 auto;
+			vertical-align: center;
+		}
+		form p span{
+			position: relative;
+			top:3px;
+		}
+		span:nth-child(2){
+			margin-left: 50px;
+		}
+
+		span label{
+			cursor: pointer;
+		}
+
+		span input[name="is_in_school"]{
+			position: relative;
+			top:3px;
+			width: 20px;
+			height: 20px;
+			cursor: pointer;
+		}
+
+		input[type='text']{
+			width: 150px;
+			height: 30px;
+		}
+
+		select{
+			width: 100px;
+			height: 30px;
+		}
+
+	</style>
+</head>
+<body>
+	<p><span><input type="radio" name="is_in_school" value="inSchool" id="inSchool" checked="checked"><label for="inSchool">在校生</label></span><span><input type="radio" name="is_in_school" value="notInSchool" id="notInSchool"><label for="notInSchool">非在校生</label></span></p>
+	<form action="#">
+		<p><span>学校 </span><select name="city" id="">
+				<option value="beijin">北京</option>
+				<option value="shanghai">上海</option>
+				<option value="hangzhou" selected="selected">杭州</option>
+			</select>
+			<select name="bejin_school" id="">
+				<option value="beida">北京大学</option>
+				<option value="qinghua">清华大学</option>
+				<option value="renming">中国人民大学</option>
+			</select>
+			<select name="shanghai_school" id="">
+				<option value="beida">复旦大学</option>
+				<option value="qinghua">交通大学</option>
+				<option value="renming">上海戏剧大学</option>
+			</select>
+			<select name="hangzhou_school" id="">
+				<option value="zheda">浙江大学</option>
+				<option value=gongye>工业大学</option>
+				<option value="ligong">理工大学</option>
+			</select>
+		</p>
+	</form>
+	<form action="#">
+		<p><span>就业单位&nbsp;</span><input type="text" placeholder="请输入就业单位"></p>
+	</form>
+
+	<script type="text/javascript">
+		//q全局变量
+		var selects = document.getElementsByTagName('select');
+		var radios = document.getElementsByName('is_in_school');
+		var forms =  document.getElementsByTagName('form');
+		//初始化
+		function initial(){
+			getFrom();
+			getOption();
+		}
+		//选择表单
+		function getFrom(){
+			for(var i = 0;i< radios.length;i ++){
+				if(radios[i].checked){
+					forms[i].style.display = 'block';
+				}else{
+					forms[i].style.display = 'none';
+				}
+			}
+		}
+		//选择下拉菜单选项
+		function getOption(){
+			var index = selects[0].selectedIndex;
+			for(var i = 1;i< selects.length;i ++){
+				if(i == index + 1){
+					selects[i].style.display = 'inline-block';
+				}else{
+					selects[i].style.display = 'none';
+				}
+			}
+		}
+		//单选按钮事件
+		function is_inSchool(){
+			document.getElementById('inSchool').addEventListener('click', function(){
+				getFrom();
+			});
+			document.getElementById('notInSchool').addEventListener('click', function(){
+				getFrom();
+			});
+		}
+		//下拉菜单事件
+		function chooseSchool(){
+			document.getElementsByTagName('select')[0].addEventListener('click', function(){
+				getOption();
+			});
+		}
+		//页面加载完成执行
+		window.addEventListener('load', function(){
+			initial();
+			is_inSchool();
+			chooseSchool();
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		canvas{
+			/*border: 1px solid black;*/
+		}
+	</style>
+</head>
+<body>
+	<img src="image/02.jpg">
+	<canvas id="draw" width="400" height="300"></canvas>
+	<script>
+		window.onload = function(){
+			var draw = document.getElementsByTagName('canvas')[0];
+			var context = draw.getContext('2d');
+			var img = document.getElementsByTagName('img')[0];
+			// context.drawImage(img,10,10,200,150);
+			// context.drawImage(img,0,10,50,50,0,100,200,200);
+			// context.shadowOffsetX = 5;
+			// context.shadowOffsetY = 5;
+			// context.shadowBlur = 4;
+			// context.shadowColor = 'rgba(0,0,0,0.5)';
+
+			// context.fillStyle = '#ff0000';
+			// context.fillRect(10,10,50,50);
+
+			// context.fillStyle = 'rgba(0,0,255,1)';
+			// context.fillRect(30,30,50,50);
+
+			// var gradient = context.createLinearGradient(30,30,70,70);
+			// var gradient = context.createRadialGradient(55,55,10,55,55,30);
+			// gradient.addColorStop(0,'#fff');
+			// gradient.addColorStop(1,'#000');
+
+			// context.fillStyle = '#ff0000';
+			// context.fillRect(10,10,50,50);
+
+			// context.fillStyle = gradient;
+			// context.fillRect(30,30,50,50);
+			// context.fillRect(50,50,50,50);
+
+			// var pattern = context.createPattern(img,'repeat');
+
+			// context.fillStyle = pattern;
+			// context.fillRect(10,10,100,100);
+
+			//灰阶过滤器
+			function grayscaleFilter(img){
+				context.drawImage(img,0,0);
+				var imgData = context.getImageData(0,0,img.width,img.height);
+				var data = imgData.data;
+				var red,blue,green,alpha,average,len = imgData.data.length;
+				for(var i = 0;i < len;i+=4){
+					red = data[i];
+					green = data[i + 1];
+					blue = data[i + 2];
+					alpha = data[i + 3];
+					average = Math.floor((red + green + blue) / 3);
+					data[i] = average;
+					data[i + 1] = average;
+					data[i + 2] = average;
+				}
+				imgData.data = data;
+
+				context.putImageData(imgData,0,0);		
+
+			}
+			grayscaleFilter(img);
+
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<div><span class="kk">hhh</span></div>
+	<input type="text" placeholder="...">
+</body>
+<script type="text/javascript">
+	window.onload = function(){
+		alert('all has loaded');
+		var range1 = document.createRange(),
+			range2 = document.createRange(),
+			div = document.getElementsByTagName('div')[0];
+		range1.selectNode(div);
+		range2.selectNodeContents(div);
+		console.log(document.implementation.hasFeature('UIEvent','3.0'));
+		console.log(document.implementation.hasFeature('HTMLEvents','2.0'));
+		console.log(document.implementation.hasFeature('MouseEvent','3.0'));
+		console.log(document.implementation.hasFeature('CompositionEvent','3.0'));
+		console.log(document.implementation.hasFeature('MuationEvents','2.0'));
+		window.onmousewheel = function(event){
+			alert(event.wheelDelta);
+		}
+		var input = document.getElementsByTagName('input')[0];
+		input.focus();
+		// input.ontextinput = function(event){
+		// 	alert('xxx');
+		// }
+		input.addEventListener('textInput', function(e){
+			console.log(e.inputMethod);
+		});
+		// document.addEventListener('keydown', function(e){
+		// 	alert(e.keyCode);
+		// });
+		// document.addEventListener('keypress', function(e){
+			// alert(String.fromCharCode(e.charCode));
+			// alert(e.location);
+		// });
+		document.addEventListener('DOMSubtreeModified',function(e){
+			console.log(e.type);
+			console.log(e.target);
+		});
+		document.addEventListener('DOMNodeInserted',function(e){
+			console.log(e.type);
+			console.log(e.target);
+			console.log(e.ralateNode);
+		});
+		document.addEventListener('DOMNodeInsertedIntoDocument',function(e){
+			console.log(e.type);
+			console.log(e.target);
+		});
+		document.addEventListener('contextmenu',function(e){
+			e.preventDefault();
+		});
+		var span = document.getElementsByTagName('span')[0];
+		var newA = document.createElement('a');
+		newA.setAttribute('href', 'http://www.taobao.com/');
+		newA.appendChild(document.createTextNode('taobao'));
+		span.appendChild(newA);
+
+	
+	}
+	window.onresize = function(){
+		alert('resize');
+	} 
+	window.addEventListener('beforeunload', function(e){
+			var message = '真的要离开了吗?';
+			e.returnValue = message;
+			return message;
+	});
+	document.addEventListener('DOMContentLoaded', function(){
+		alert('DOM tree has loaded');
+	});
+	document.onreadystatechange = function(){
+		console.log(document.readyState);
+	}
+	var showCount = 0;
+	window.addEventListener('pageshow',function(){
+		showCount++;
+		alert('show has been fired ' + showCount + ' times.');
+	});
+
+	console.log('ondeviceorientation' in window);
+	console.log('ondevicemotion' in window);
+</script>
+</html>

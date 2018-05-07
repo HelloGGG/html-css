@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script type="text/javascript" src="jquery.min.js"></script>
+	<script type="text/javascript" src="https://cdn.bootcss.com/velocity/2.0.2/velocity.js"></script>
+	<script type="text/javascript" src="https://cdn.bootcss.com/velocity/2.0.2/velocity.ui.min.js"></script>
+	<style>
+		#box1{
+			width: 100px;
+			height: 100px;
+			margin-bottom: 10px;
+			background-color: #f00;
+		}
+		#box2{
+			width: 100px;
+			height: 100px;
+			background-color: #f33;
+		}
+
+
+	</style>
+</head>
+<body>
+	<div id="box1"></div>
+	<div id="box2"></div>
+	<script>
+		'use strict';
+		window.onload = function(){
+			var seq = [
+				{
+					elements:$('#box1'),
+					properties:{transform:'scaleX(1.1)'},
+					options:{duration:500}
+				},
+				{
+					elements:$('#box1'),
+					properties:{transform:'scaleX(1.0)'},
+					options:{duration:500}
+				}
+			];
+
+
+			$.Velocity.RunSequence(seq);
+			
+			//自定义动画
+			$.Velocity.RegisterEffect('gqqpluse',{
+				defaultDuration:500,
+				calls:[
+					[{transform:'scaleX(1.5)'},0.5],
+					[{transform:'scaleX(1.0)'},0.5]
+				]
+			});
+
+			$('#box1').on('mouseover',function(){
+				$(this).velocity('gqqpluse');
+			});
+
+		}	
+		
+	</script>
+</body>
+</html>

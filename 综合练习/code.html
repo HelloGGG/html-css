@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+	// 'use strict';
+	// var arr = [8,5,4];
+	// console.log(arr.splice(0,1));
+	// console.log(arr.splice(0,1,'ddd'));
+	// console.log(arr);
+	// arr.every(function(item,index,arr){
+	// 	if(item > 3){
+	// 		return true;
+	// 	}
+	// });
+	// console.log(arr.every(function(item,index,arr){
+	// 	if(item > 5){
+	// 		return true;
+	// 	}
+	// }));
+	// 
+	// var str = 'ab,cd'
+	// console.log(arr.join('|'));
+	// console.log(arr.reduce(function(prev,cur){
+	// 	return prev + cur ;
+	// }));
+	// var date = Date.now();
+	// date.now();
+	// var date1 = new Date('03/04/1997');
+	// console.log(date.getMonth());
+	// console.log(date1.toLocaleDateString());
+	// console.log(date);
+
+	// function factorial(num){
+	// 	if(num <= 1){
+	// 		return 1;
+	// 	}else{
+	// 		// return num * factorial(num - 1);
+	// 		return num * arguments.callee(num - 1);
+	// 	}
+	// }
+	// console.log(factorial(100));
+
+	// function outer(){
+	// 	inner();
+	// }
+
+	// function inner(){
+	// 	alert(inner.caller);
+	// 	// alert(arguments.callee.caller);
+	// }
+
+	// outer();
+	var color = 'red';
+	var o = {color:'blue'};
+	function display(){
+		console.log(this.color);
+	}
+	// display();
+	// display.apply(o);
+	// display.call(o);
+	var display1 = display.bind(o);
+	display1();
+	// function sum(num1,num2,num3){
+	// 	return num1 + num2 + num3;
+	// }
+
+	// function sum1(num1,num2,num3){
+	// 	return sum.apply(this,arguments);
+	// }
+	// function sum2(num1,num2,num3){
+	// 	return sum.apply(this,[num1,num2,num3]); 
+	// }
+	// function sum3(num1,num2,num3){
+	// 	return sum.call(this,num1,num2,num3);
+	// }
+	// console.log(sum3(10,10,20));
+	// var num = '25';
+	// var number = Number(num);
+	// alert(typeof number);
+
+	// var obj = new Object(num);
+	// alert(typeof obj);
+	// var num = 10;
+	// console.log(num.toFixed(3));
+	// console.log(num.toExponential(3));
+	// console.log(num.toPrecision(3));
+
+	// var str = '    asdfgh    ';
+	// console.log(str.charAt(0));
+	// console.log(str.charCodeAt(0));
+	// console.log(str[2]);
+	// var newstr =  str.concat('4545');
+	// var newstr = str.trim();
+	// console.log(newstr);
+	// console.log(str);
+	function htmlEscape(text){
+		return text.replace(/[<>"&]/g,function(match,pos,originalText){
+			switch(match){
+				case '<':return '&lt;';
+				case '>':return '&gt;';
+				case '"':return '&quot;';
+				case '&':return '&amp;';
+			}
+		})
+	}
+
+	console.log(htmlEscape('<div class="box">hhhh&aaa</div>'));
+	console.log(encodeURIComponent('http://www.baidu.com'));
+	console.log(encodeURI('http://www.baidu.com'));
+	eval('console.log(encodeURIComponent("http://www.baidu.com"));');
+	// SyntaxError
+	// TypeError
+	// EvalError
+	var arr = [51,23,48,63,19,20];
+	console.log(Math.max.apply(Math,arr));
+	console.log(Math.min.apply(Math,arr));
+
+	var person = {};
+	Object.defineProperty(person,'name',{
+		configurable:false,
+		enumerable:false,
+		writable:false,
+		value:'gqq'
+	});
+	person.name = 'hhh';
+	delete person.name;
+	console.log(person.name);
+
+	var book = {};
+	// book.__defineGetter__('year',function(){
+	// 	return this._year;
+	// });
+	// book.__defineSetter__('year',function(){
+	// 	if(newValue > 2004){
+	// 		this._year = newValue;
+	// 		this.edition += newValue - 2004; 
+ // 		}
+	// });
+	Object.defineProperties(book,{
+	 	_year:{
+	 		writable:true,
+	 		value:2004
+	 	},
+	 	edition:{
+	 		writable:true,
+	 		value:1
+	 	},
+	 	year:{
+	 		get:function(){
+	 			return this._year;
+	 		},
+	 		set:function(){
+	 			if(newValue > 2004){
+	 				this._year = newValue;
+	 				this.edition += newValue - 2004; 
+	 			}
+	 		}
+	 	}
+	 });
+	var descriptor = Object.getOwnPropertyDescriptor(book, '_year');
+	console.log(descriptor.value);
+	console.log(descriptor.configurable);
+	console.log(descriptor.enumerable);
+	//factory mode
+	function createPerson(name,age,hobby){
+		var p = new Object();
+		p.name = name;
+		p.age = age;
+		p.hobby = hobby;
+		p.sayName = function(){
+			return this.name;
+		}
+		return p;
+	}
+	//构造函数模式
+	function Person(){
+	}
+	Person.prototype.name = 'ccc';
+	Person.prototype.age = 18;
+	Person.prototype.hobby = 'study';
+	Person.prototype.sayName = function(){
+		return this.name;
+	}
+	var person1 = new Person();
+	person1.name = 'gqq';
+	var person2 = new Person();
+	// alert(person1.constructor == Person);
+	// alert(Person.prototype.constructor); 
+	// alert(Person.prototype.isPrototypeOf(person1)); 
+	console.log(Object.getPrototypeOf(person1));
+	console.log(Object.getPrototypeOf(person1).name);
+	console.log(person1.name);
+	console.log(person2.name);
+	person1.name = null;
+	console.log(person1.name);
+	delete person1.name;
+	// console.log(person1.name);
+	// console.log(person1.hasOwnProperty('name'));
+	// console.log(Object.keys(Person.prototype));
+	// console.log(Object.getOwnPropertyNames(Object));
+	// console.log(Object.getOwnPropertyNames(Object.prototype));
+	// console.log(Object.getOwnPropertyNames(Math));
+	// console.log(Object.getOwnPropertyNames(RegExp));
+	// console.log(Object.getOwnPropertyNames(String));
+	// console.log(Object.getOwnPropertyNames(String.prototype));
+	// console.log(Object.getOwnPropertyNames(Array.prototype));
+	// console.log(Object.getOwnPropertyNames(Number));
+
+	function Box(){}
+	Box.prototype = {
+		constructor:Box,
+		name:'zero',
+		age:18,
+		sex:'male',
+		getName:function(){
+			return this.name;
+		}
+	}
+	var box = new Box();
+	console.log(box instanceof Box);
+	console.log(box.constructor === Object);
+	console.log(box.constructor === Box);
+
+
+	function SuperType(){
+		this.color =  ['red','blue','black'];
+	}
+	SuperType.prototype.name = 'hello';
+	SuperType.prototype.show = function(){
+		return 'show';
+	}
+	function SubType(){}
+	SubType.prototype = new SuperType();		//继承
+	var sub = new SubType();
+	var sub1 = new SubType();
+	sub.color.push('lime');
+	console.log(sub.name);
+	console.log(sub.show());
+	console.log(sub.color);
+	console.log(sub1.color);
+
+	function Father(name,colors){
+		this.name = name;
+		this.colors = colors;
+	}
+	Father.prototype.show = function(){
+		return 'show function';
+	}
+	function Son(name,colors,hobby){
+		Father.apply(this,arguments);
+		// Father.call(this,name,colors);
+		this.hobby = hobby;
+	}
+	Son.prototype = new Father();
+	Son.prototype.display = function(){
+		return 'display function';
+	}
+	Son.prototype.constructor = Son;
+	var father = new Father('kkk',['orange','aqua']);
+	// console.log(father.colors);
+	var son1 = new Son('zero',['red','black'],'basketball');
+	son1.colors.push('blue');
+	// console.log(son1.name);
+	// console.log(son1.colors);
+	// console.log(son1.hobby);
+	// console.log(son1.show());
+	// console.log(son1.display());
+	// console.log(Son.prototype.constructor === Son);
+	// console.log(Son.prototype.constructor === Father);
+	//寄生组合继承
+	function Superr(name){
+		this.name = name;
+		this.colors = ['red','blue','green'];
+	}
+
+	Superr.prototype.sayName = function(){
+		return this.name;
+	}
+
+	function Subb(name,age){
+		Superr.call(this,name);
+		this.age = age;
+	}
+
+	inheritPrototype(Subb,Superr);
+
+	function inheritPrototype(subb,superr){
+		var prototype = Object(superr.prototype);
+		prototype.constructor = subb;
+		subb.prototype = prototype;
+	}
+	Subb.prototype.sayAge = function(){
+		return this.age;
+	}
+	var subb = new Subb('mmm',21);
+	console.log(subb.sayAge());
+	console.log(subb.sayName());
+
+	//闭包
+	function add(){
+		var i = 0;
+		function f1(){
+			return i ++;
+		}
+		// return function(){		
+		// 	return i ++;
+		// }
+		return f1;
+	}
+	function add1(){
+		var i = 0;
+		return i++;
+	}
+	var result = add();
+	// console.log(result());
+	// console.log(result());
+	// console.log(result());
+	// console.log(result());
+	// console.log(add1());
+	// console.log(add1());
+	// console.log(add1());
+	
+
+	//模仿块级作用域
+	(function(){
+		for(var i = 0;i < 5;i ++){
+			console.log(i);
+		}
+	})();
+	// console.log(i);
+	for(var j = 0;j < 5;j ++){
+
+	}
+	console.log(j);
+	//单例模式
+	var singleton = {
+		name: 'halo',
+		look:function(){
+			alert('mmm');
+		}
+	};
+	//模块模式,加强了单例模式
+	/*var application = function(){
+		var name = 'gqq';		//单例,私有变量
+		function show(){	//闭包
+			alert('hhhh');
+		}
+		return {
+			man:false,
+			getName:function(){
+				return name;
+			}
+		}
+	}*/
+	function BaseComponent(){}
+	//增强型模块模式
+	var application = function(){
+		//私有变量
+		var components = new Array();
+		components.push(15);
+		//创建application的副本
+		var app = new BaseComponent();
+
+		//公共接口
+		app.getComponentCount = function(){
+			return components.length;
+		};	
+
+		app.registerComponent = function(){
+			if(typeof component === 'object'){
+				components.push(component);
+			}
+		}
+		//返回副本
+		return app;
+	}
+	window.resizeTo(100,100);
+	window.resizeBy(200,200);
+	</script>
+</body>
+</html>
+

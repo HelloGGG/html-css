@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		.drag{
+			height: 100px;
+			width: 100px;
+			background-color: blue;
+			line-height: 100px;
+			font-size: 30px;
+			text-align: center;
+			cursor: move;
+		}
+
+		.container{
+			height: 100px;
+			width: 300px;
+			background-color: red;
+			line-height: 100px;
+			font-size: 30px;
+			text-align: center;
+			-moz-user-select: none; 
+			user-select: none;
+		}
+
+		main{
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body unselectable="on" onselectstart="return false;">
+	<!-- <div class="drag" draggable="true">box</div>
+	<div class="container">container</div> -->
+	<main>
+		<video src="G:\电影\阳光电影www.ygdy8.com.王牌特工2：黄金圈.BD.720p.国英双语双字.mkv" poster="image/01.jpg" controls="">video can't play</video>
+		<div class="control">
+			<input type="button" value="Play" id="bth_video">
+			<input type="button" value="音量增加" id="bth_volumeIn">
+			<input type="button" value="音量减小" id="bth_videoDe">
+			<input type="button" value="播放速度增加" id="bth_playbackRateIn">
+			<input type="button" value="播放速度减小" id="bth_playbackRateDe">
+			已播放: <span id="curTime">0 seconds</span>/总时长: <span id="duration">0 minutes</span>/当前播放速度:<span id="rate"></span>
+		</div>
+	</main>
+	
+	<script type="text/javascript">
+		// window.onerror = function(message,url,line){
+		// 	alert(message);
+		// 	return false;
+		// }
+		
+		console.log(document.implementation.hasFeature('XPath','3.0'));
+		var video = document.getElementsByTagName('video')[0];
+		var bth = document.getElementById('bth_video')
+		bth.onclick = function(e){
+			if(video.paused){
+				video.play();
+				bth.value = 'Pause';
+			}else{
+				video.pause();
+				bth.value = 'Play';
+			}
+		}
+		document.getElementById('bth_volumeIn').onclick = function(){
+			if(video.volume <= 0.9){
+				video.volume += 0.1;
+			}
+		}
+		document.getElementById('bth_videoDe').onclick = function(){
+			if(video.volume >= 0.1){
+				video.volume -= 0.1;
+			}
+		}
+		document.getElementById('bth_playbackRateIn').onclick = function(){
+			if(video.playbackRate <= 2.5){
+				video.playbackRate += 0.5;
+			}
+		}
+		document.getElementById('bth_playbackRateDe').onclick = function(){
+			if(video.playbackRate >= 1.0){
+				video.playbackRate -= 0.5;
+			}
+		}
+		function f(){
+			curTime.innerHTML = video.currentTime.toFixed(0) + ' seconds';
+			document.getElementById('duration').innerHTML = (video.duration/60).toFixed(1) + ' minutes';
+			document.getElementById('rate').innerHTML = video.playbackRate;
+			setTimeout(f, 250);
+		}
+		setTimeout(f,250);
+
+
+		var audio = new Audio('郑诺奇 - 不想.mp3');
+		audio.oncanplaythrough = function(){
+			this.play();
+			this.loop = true;
+		}
+		
+		// var box = document.getElementsByClassName('drag')[0];
+		// var container = document.getElementsByClassName('container')[0];
+		// //设置放置对象
+		// function makeContainer(){
+		// 	container.ondragenter = function(e){
+		// 		e.preventDefault();
+		// 		this.style.color = '#fff';
+		// 	}
+		// 	container.ondragleave = function(e){
+		// 		e.preventDefault();
+		// 		this.style.color = '#000';
+		// 	}
+		// 	container.ondragover = function(e){
+		// 		e.preventDefault();
+		// 		this.style.color = '#fff';
+		// 	}
+		// 	container.ondrop = function(e){
+		// 		e.preventDefault();
+		// 		document.body.removeChild(box);
+		// 		this.style.color = '#000';
+		// 	}
+		// }
+
+		// window.onload = function(){
+		// 	makeContainer();
+		// }
+	</script>
+</body>
+</html>

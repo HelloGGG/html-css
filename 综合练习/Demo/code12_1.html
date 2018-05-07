@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<button>click me!!!</button>
+	<input type="text" placeholder="please enter text...">
+	<span></span>
+	<script type="text/javascript">
+		window.onload = function(){
+
+			var event = document.createEvent('MouseEvents'),	//DOM2级
+				event1 = document.createEvent('KeyboardEvent'), //DOM3级
+				event2 = document.createEvent('CustomEvent'),
+			 	bth = document.getElementsByTagName('button')[0],
+				text = document.getElementsByTagName('input')[0],
+				span = document.getElementsByTagName('span')[0];
+
+			bth.onclick = function(){
+				alert('我被点击了');
+			}
+			text.onkeydown = function(e){
+				text.value = e.keyCode;
+			}
+			span.addEventListener('myEvent', function(event){
+				alert('DIV: ' + event.detail);
+				span.innerHTML = 'zero';
+			},false);
+
+			event.initMouseEvent('click',true,true,document.defaultView,0,0,0,0,0,false,false,false,false,0,null);
+			bth.dispatchEvent(event);
+
+			event1.initKeyboardEvent('keydown',true,true,document.defaultView,'a',0,'Shift',1);
+			text.dispatchEvent(event1);
+
+			event2.initCustomEvent('myEvent',true,false,'Hello World');
+			span.dispatchEvent(event2);
+
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+		'use strict';
+		//作用域安全构造函数
+		function Person(name,age,job){
+			if(this instanceof Person){
+				this.name = name;
+				this.age = age;
+				this.job = job;
+			}else{
+				return new Person(name,age,job);
+			}
+		}
+		var value = new Array();
+		//检测类型
+		console.log(Object.prototype.toString.call(value));
+
+		//函数柯里化
+		function curry(fn){
+			var args = Array.prototype.slice.call(arguments,1);
+			return function(){
+				var innerArgs = Array.prototype.slice.call(arguments);	//将arguments转变为数组
+				
+				var finalArgs = args.concat(innerArgs);
+				return fn.apply(null,finalArgs);
+			}
+		}
+
+		var person = new Person('zero',18,'student');
+		//放篡改对象
+		// Object.preventExtensions(person);
+		//密封对象
+		// Object.seal(person);
+		//冻结对象
+		// Object.freeze(person);
+		person.hobby = 'basketball';
+		console.log(person.hobby);	
+
+
+		let fn = () => void doesNotReturn();
+
+		console.log(...[1,2,3]);
+		console.log(Math.max(...[15,85,14]));
+		console.log(new Date(...[2015, 1, 1]));
+		let arr = [...'Gqq'];
+		console.log(Object.prototype.toString.call(arr));
+
+		//类数组对象
+		let arrayLike = {
+			'0':'a',
+			'1':'b',
+			'2':'c',
+			length:3
+		};
+		// ES5的写法
+		var arr1 = [].slice.call(arrayLike); // ['a', 'b', 'c']
+		//ES6的写法
+		arrayLike = Array.from(arrayLike);	//转变为数组
+		console.log(Object.prototype.toString.call(arrayLike));
+		console.log(...arrayLike);
+		console.log(document.hidden);
+		console.log(document.visibilityState);
+		var curPosition = navigator.geolocation.getCurrentPosition((position) => {
+			drawMapCenteredAt(position.coords.latitute, position.coords.longitude);
+		},(error) => {
+				console.log("Error code: " + error.code);
+				console.log("Error message: " + error.message);
+			},{
+				enableHighAccuracy: true,
+				timeout: 5000,
+				maximumAge: 25000 
+			});
+
+		var watchId = navigator.geolocation.watchPosition((position) => {
+			drawMapCenteredAt(position.coords.latitute, position.coords.longitude);
+		},(error) => {
+				console.log("Error code: " + error.code);
+				console.log("Error message: " + error.message);
+		});
+
+		(function(){
+			let [name, values] = ['zero', 'color'];
+			console.log('name: ' + name + '||' + 'value: ' + values);
+		}());
+		
+		console.log(Proxy);
+
+		var Stack = (() => {
+			var stack = [],
+				allowed = ['push', 'pop', 'length'];
+
+			return Proxy.create({
+				get:(receiver, name) => {
+					if(allowed.indexOf(name) > -1){
+						if(typeof stack[name] === 'function'){
+							return stack[name].bind(stack);
+						}else{
+							return stack[name];
+						}
+					}else{
+						return undefined;
+					}
+				}
+			});
+		});
+
+	/*	var mystack = new Stack();
+
+		mystack.push('hi');
+		mystack.push('goodbye');
+
+		console.log(mystack.length); 
+		console.log(mystack[0]); 
+		console.log(mystack.pop()); */
+
+		var map = new Map();
+
+		map.set('name','Halo');
+		map.set('age',22);
+
+		console.log(map.get('name') + '|' + map.get('age'));
+		
+		var set = new Set();
+
+		set.add('hobby','reading');
+
+		console.log(set.has('hobby'));
+
+		//ES6 创建类
+		class Student{
+
+			constructor(name,age){
+				this.name = name;
+				this.age  = age;
+			}
+
+			sayName(){
+				alert(this.name);
+			}
+
+			getOlder(years){
+				this.age += years;
+			}
+		}
+
+		//模块
+		/*module MyModule{
+			//公开这些成员
+			export let myobject = {};
+			export function hello() {alert('hello');};
+			//隐藏这些成员
+			function goodbye(){
+
+			}
+		}*/
+		function loaddemo(){
+            if(navigator.geolocation){
+                alert('浏览器支持html5 geolocation');
+            }else{
+                alert('浏览器不支持html5 geolocation');
+            }
+        }
+        loaddemo();
+
+       /* var nvaga = navigator.geolocation;
+	    nvaga.getCurrentPosition(updatPos,errorLoca);
+	    
+	    function updatPos(position){
+	        var latitude = position.coords.latitude;//十进制单位
+	        var longitude = position.coords.longitude;//十进制单位
+	        var accuracy = position.coords.accuracy;//以m为单位制定纬度和经度与实际位置的差距
+	        var timestamp = position.timestamp;
+	        console.log('经度坐标' + latitude);
+	        console.log('纬度坐标' + longitude);
+	        console.log('准确度' + accuracy);
+	        console.log('获取位置数据的时间' + timestamp);//时间戳
+	    }
+	    function errorLoca(error){
+	        switch(error.code){
+	            case 0:
+	                console.log('位置信息获取失败，失败原因'+error.message);
+	            break;
+	            case 1://错误编码 PERMISSION_DENIED
+	                console.log('用户拒绝共享其位置信息');
+	            break;
+	            case 2://错误编码 POSITION_UNAVAILABLE
+	                console.log('尝试获取用户位置数据，但失败了');
+	            break;
+	            case 3://错误编码 TIMEOUT
+	                console.log('尝试获取用户的位置数据超时');
+	            break;
+	        }
+	    }*/
+	</script>
+</body>
+</html>

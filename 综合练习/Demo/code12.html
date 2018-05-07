@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*{
+			margin:0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		.box{
+			position: absolute;
+			left:50%;
+			top:50%;
+			margin-left: -50px;
+			margin-top: -50px;
+			height: 100px;
+			width: 100px;
+			padding: 20px;
+			border:1px solid #ccc;
+			border-radius:5px;
+			background-color:darkred;
+			text-align: center;
+			line-height: 60px;
+		}
+
+		.lime{
+			background-color:lime;
+			height: 100px;
+			width: 100px;
+			border-radius:50px;
+		}
+
+		.hh{
+			text-align: center;
+			line-height: 100px;
+		}
+
+		.xxx{}
+		.ccc{}
+	</style>
+	<style>
+		.hhhh{
+
+		}
+	</style>
+	<style></style>
+	<style></style>
+	<style></style>
+	<style></style>
+	<style></style>
+	<style></style>
+	<style></style>
+	<style></style>
+</head>
+<body>
+	<div class="box" style="transition:all 1s linear;">box</div>
+	<input type="text" placeholder="please enter...">
+	<script type="text/javascript">
+		var box = document.getElementsByClassName('box')[0];
+		var computedStyle = document.defaultView.getComputedStyle(box,null);
+		window.onload = function(){
+			document.getElementsByTagName('input')[0].focus();
+			box.classList.remove('box');
+		/*	box.style.cssText = 'height:200px;width:200px;cursor:pointer;';
+			box.style.removeProperty('cursor');
+			box.style.setProperty('background-color','aqua');*/
+			box.classList.add('hh');
+			box.classList.add('lime');
+			box.classList.toggle('box');
+			console.log(document.activeElement);
+			console.log(box.classList.length);
+			console.log(box.classList.contains('box'));
+			// console.log(box.style.getPropertyValue('background-color'));
+			console.log(computedStyle.height);
+			console.log(box.offsetHeight);
+			console.log(box.offsetLeft);
+			console.log(box.offsetTop);
+			console.log(box.clientHeight);
+			console.log(box.clientWidth);
+			console.log(document.documentElement.scrollLeft);
+			console.log(document.documentElement.scrollTop);
+			console.log(document.documentElement.scrollHeight);
+			console.log(document.documentElement.scrollWidth);
+			console.log(document.implementation.hasFeature('StyleSheets',2.0));
+			console.log(document.styleSheets[0].cssRules[0].style.cssText);
+			console.log(document.styleSheets[0].cssRules[1].style.backgroundColor);
+			console.log(document.styleSheets[0].cssRules[1].style.width);
+			console.log(document.styleSheets[0].cssRules[1].style.height);
+			document.styleSheets[0].insertRule('body{background-color:#ccc;}',0);
+			console.log(document.styleSheets[0].cssRules);
+			document.styleSheets[0].deleteRule(0);
+			console.log(document.styleSheets);		//每一个style标签或者link标签引入的都是一张样式表
+			console.log(box.getBoundingClientRect().left);
+			console.log(box.getBoundingClientRect().top);
+			console.log(box.getBoundingClientRect().right);
+			console.log(box.getBoundingClientRect().bottom);
+			var filter = function(node){
+				return node.nodeName.toLowerCase() === 'div' ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
+			}
+			var iterator = document.createNodeIterator(document, NodeFilter.SHOW_ELEMENT,filter,null);
+			var node = iterator.nextNode();
+
+			while(node !== null){
+				console.log(node.nodeName);
+				node =  iterator.nextNode();
+			}
+
+			var treeWalker = document.createTreeWalker(document,NodeFilter.SHOW_ALL,null,null);
+
+		}
+	</script>
+</body>
+</html>
+</html>

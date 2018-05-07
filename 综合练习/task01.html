@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>task01</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		form{
+			height: 300px;
+			width: 800px;
+			margin: 100px auto;
+			border:1px solid #cecece;
+			border-radius: 20px;
+		}
+
+		p{
+			margin: 10px;
+			font-size: 30px;
+			font-family: 'SimHei';
+		}
+
+		p:nth-child(2){
+			font-size: 20px;
+			margin-left:100px;
+		}
+
+		p input{
+			height: 50px;
+			font-size: 20px;
+			font-family: 'SimHei';
+			border-radius: 10px;
+			border: 2px solid #cecece;
+			outline: none;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+
+		p input[type="text"]{
+			width: 500px;
+			text-indent: 30px;
+			
+		}
+
+		p input[type="button"]{
+			width: 100px;
+			background: rgb(47,121,186);
+			color:#fff;
+			margin-left: 10px;
+			cursor: pointer;
+		}
+
+		p input[type="button"]:hover{
+			opacity: 0.5;
+		}
+
+		.correct{
+			color:rgb(94,187,70);
+		}
+
+		.error_empty{
+			color:red;
+		}
+
+		.error_other{
+			color:#cecece;
+		}
+
+	</style>
+</head>
+<body>
+	<form action="">
+		<p>名称:&nbsp;<input type="text" placeholder="请输入..."><input type="button" value="验证"></p>
+		<p id="tip"></p>
+	</form>
+	
+	<script type="text/javascript">
+		var tip = document.getElementById('tip');
+
+		function initial(){
+			document.getElementsByTagName('input')[0].focus();
+		}
+		//去空格
+		function trim(str){
+			return str.replace( /(^\s*)|(\s*$)/g,'');
+		}
+		//提交按钮
+		function btn_submit(){
+			document.getElementsByTagName('input')[1].addEventListener('click',function(){
+				initial();
+				var content = document.getElementsByTagName('input')[0].value;
+				var reg1 = /[\u4e00-\u9fa5]{1}/g;				//匹配汉字
+				var reg2 = /[0-9a-zA-Z_,.;]{1}/g;				//匹配数字,大小写字母,英语标点符号不包括空格
+				var count1 = 0;
+				var count2 = 0;
+				if(!trim(content).match(reg1)){			//匹配不到返回null时
+					count1 = 0;			
+				}else{
+					count1 = trim(content).match(reg1).length * 2;
+				}
+				if(!trim(content).match(reg2)){
+					count2 = 0;
+				}else{
+					count2 = trim(content).match(reg2).length;
+				}
+
+				var count = count1 + count2; 			//名称总长度
+				if(count >=4 && count <= 16){
+					tip.className = 'correct';
+					tip.innerText = '格式正确';
+					document.getElementsByTagName('input')[0].style.border = '1px solid rgb(94,187,70)';
+				}else if(count == 0){
+					tip.className = 'error_empty';
+					tip.innerText = '不得为空';
+					document.getElementsByTagName('input')[0].style.border = '1px solid red';
+				}else{
+					tip.className = 'error_other';
+					tip.innerText = '必填,长度为4-16个字符';
+					document.getElementsByTagName('input')[0].style.border = '1px solid #cecece';
+				}
+			});
+		}
+
+		window.addEventListener('load',function(){
+			initial();
+			btn_submit();
+		});
+	</script>
+</body>
+</html>

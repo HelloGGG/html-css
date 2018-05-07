@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*,::after,::before{
+			margin:0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		.clearfix::after,.clearfix::before{
+			content: '';
+			display: block;
+			clear: both;
+		}
+
+		table{
+			border:1px solid black;
+			margin: 0 auto;
+		}
+
+		table td{
+			width: 80px;
+			height: 30px;
+			border:1px solid black;
+			text-align: center;
+		}
+		
+		table thead td span{
+			margin: 0 0 0 18px;
+		}
+
+		table thead td{
+			background: #ccc;
+			cursor: pointer;
+		}
+
+		table thead td .logo_arror{
+			float: right;
+			margin-right: 8px;
+		}
+
+		table thead td .logo_arror::after{
+			display: block;
+			content: '';
+			height: 0;
+			width: 0;
+			border-left: 5px solid transparent;
+			border-right: 5px solid transparent;
+			border-top: 10px solid white;
+		}
+
+		table thead td .logo_arror::before{
+			display: block;
+			content: '';
+			height: 0;
+			width: 0;
+			border-left: 5px solid transparent;
+			border-right: 5px solid transparent;
+			border-bottom: 10px solid white;
+			margin-bottom: 2px;
+		}
+
+		table thead td:nth-child(1) span{
+			margin: 0px;
+		}
+
+		table thead td:nth-child(1) .logo_arror::after,table thead td:nth-child(1) .logo_arror::before{
+			content:none;
+		}
+
+		button{
+			display: block;
+			margin:0 auto;
+		}
+	</style>
+</head>
+<body>
+	<table cellspacing="0">
+		<thead>
+			<td><span>姓名</span><div class="logo_arror"></div></td>
+			<td class="m"><span>数学</span><div class="logo_arror"></div></td>
+			<td class="c"><span>语文</span><div class="logo_arror"></div></td>
+			<td class="e"><span>英语</span><div class="logo_arror"></div></td>
+			<td class="s"><span>总分</span><div class="logo_arror"></div></td>
+		</thead>
+		<tbody>
+			<tr>
+				<td class="name">小明</td>
+				<td class="math">88</td>
+				<td class="chinese">85</td>
+				<td class="english">90</td>
+				<td class="sum"></td>
+			</tr>
+			<tr>
+				<td class="name">小红</td>
+				<td class="math">85</td>
+				<td class="chinese">95</td>
+				<td class="english">79</td>
+				<td class="sum"></td>
+			</tr>
+			<tr >
+				<td class="name">小刚</td>
+				<td class="math">86</td>
+				<td class="chinese">84</td>
+				<td class="english">97</td>
+				<td class="sum"></td>
+			</tr>
+		</tbody>
+	</table>
+	<button>计算总分</button>
+	<script type="text/javascript">
+		//全局变量
+		var names = document.getElementsByClassName('name'); 
+		var math = document.getElementsByClassName('math');
+		var chinese = document.getElementsByClassName('chinese');
+		var english = document.getElementsByClassName('english');
+		var sum = document.getElementsByClassName('sum');
+		var sum_arr = [];
+		//计算总分
+		function sum_all(){
+			document.getElementsByTagName('button')[0].addEventListener('click', function(){
+				for(var i = 0;i < names.length;i++){
+					sum_arr[i] = parseInt(math[i].innerText) + parseInt(chinese[i].innerText) + parseInt(english[i].innerText);
+					sum[i].innerText = sum_arr[i];
+				}
+			});
+		}
+		//交换项目
+		function exchange(i,j){
+			var temp = math[i].innerText;
+			math[i].innerText = math[j].innerText;
+			math[j].innerText = temp;
+
+			var temp = chinese[i].innerText;
+			chinese[i].innerText = chinese[j].innerText;
+			chinese[j].innerText = temp;
+
+			var temp = names[i].innerText;
+			names[i].innerText = names[j].innerText;
+			names[j].innerText = temp;
+
+			var temp = english[i].innerText;
+			english[i].innerText = english[j].innerText;
+			english[j].innerText = temp;
+
+			var temp = sum[i].innerText;
+			sum[i].innerText = sum[j].innerText;
+			sum[j].innerText = temp;
+		}
+		//按数学排序
+		function sort_math(){
+			document.getElementsByClassName('m')[0].addEventListener('click', function(){
+				for(var i = 0;i < names.length -1;i++){
+					for(var j = i + 1; j< names.length;j++){
+						if(parseInt(math[i].innerText) < parseInt(math[j].innerText)){
+							exchange(i,j);
+						}
+					}
+				}		
+			});
+		}
+		//按语文排序		
+		function sort_chinese(){
+			document.getElementsByClassName('c')[0].addEventListener('click', function(){
+				for(var i = 0;i < names.length -1;i++){
+					for(var j = i + 1; j< names.length;j++){
+						if(parseInt(chinese[i].innerText) < parseInt(chinese[j].innerText)){
+							exchange(i,j);
+						}
+					}
+				}		
+			});
+		}
+		//按英语排序
+		function sort_english(){
+			document.getElementsByClassName('e')[0].addEventListener('click', function(){
+				for(var i = 0;i < names.length -1;i++){
+					for(var j = i + 1; j< names.length;j++){
+						if(parseInt(english[i].innerText) < parseInt(english[j].innerText)){
+							exchange(i,j);
+						}
+					}
+				}		
+			});
+		}
+		//按总分排序
+		function sort_sum(){
+			document.getElementsByClassName('s')[0].addEventListener('click', function(){
+				for(var i = 0;i < names.length -1;i++){
+					for(var j = i + 1; j< names.length;j++){
+						if(parseInt(sum[i].innerText) < parseInt(sum[j].innerText)){
+							exchange(i,j);
+						}
+					}
+				}		
+			});
+		}
+		//排序方法汇总
+		function sort_ways(){
+			sort_math();
+			sort_chinese();
+			sort_english();
+			sort_sum();
+		}
+		//页面加载完,执行
+		window.onload = function(){
+			sum_all();
+			sort_ways();
+		}
+	</script>
+</body>
+</html>

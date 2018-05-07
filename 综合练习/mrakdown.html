@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*,::after,::before{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body{
+			background-color: black;
+			padding:10px;
+		}
+
+		ul,ol{
+			margin-left:50px;
+		}
+
+		a{
+			color:#fff;
+		}
+		.write,.display{
+			width: 48%;
+			height: 900px;
+			float: left;
+			border: 1px solid #ccc;
+		
+		}
+
+		textarea{
+			width: 100%;
+			height: 100%;
+			color:#cecece;
+			line-height: 20px;
+			resize: none;
+			background-color: rgb(39,40,34);
+			outline: none;
+			font-family: 'SimHei';
+			font-size: 18px;
+		}
+
+		.display{
+			padding:10px;
+			background-color: rgb(39,40,34);
+			float: right;
+			color:#fff;
+		}
+
+		hr{
+			margin:5px 0 10px 5px;		
+		}
+
+		code{
+			background-color: #ccc;
+			color:black;
+			font-size: 18px;
+		}
+
+		.quote{
+			height: 40px;
+			width: 95%;
+			border-left:5px solid #ccc;
+			margin:10px;
+			padding:10px;  
+		}
+
+		.codeblock{
+			padding-left: 10px;
+			color:black;
+			background-color: #ccc;
+			margin-left: 10px;
+			font-size: 18px;
+		}
+	</style>
+</head>
+<body>
+	<div class="write">
+		<textarea>---
+### 简易MarkDown编辑器
+# 一级标题 *first*
+## 二级标题 `second`
+### 三级标题 **third**
+#### 四级标题 [点我](https://github.com/HelloGGG)
+##### 五级标题\n###### 六级标题
+* 1 `这是无序列表`
+* 2 *23333*
+* 3 **dsdsa**
+1. 2 `这是有序列表`
+1. 3
+1. 4
+*斜体* **粗体** `行内标记` ![图片](C:\Users\admin\Desktop\js\综合练习\404.png) [百度二下](http://www.baidu.com) 
+---</textarea>
+	</div>
+	<div class="display"></div>
+	<script type="text/javascript">
+		function writeContent(input){
+			var result = [];
+			var markPattern = [					//先处理块级标记,行内单独处理,因为块内可包含行内
+				{reg:/^#\s+(.*)$/,name:'h1'},
+				{reg:/^#{2}\s+(.*)$/,name:'h2'},
+				{reg:/^#{3}\s+(.*)$/,name:'h3'},
+				{reg:/^#{4}\s+(.*)$/,name:'h4'},
+				{reg:/^#{5}\s+(.*)$/,name:'h5'},
+				{reg:/^#{6}\s+(.*)$/,name:'h6'},
+				{reg:/^[*-+]\s(.*)$/,name:'ul'},
+				{reg:/^[0-9]+\.\s(.*)$/,name:'ol'},
+				{reg:/^>\s(.*)$/,name:'quote'},
+				{reg:/^```(.+)/,name:'blockopen'},
+				{reg:/(.+)```$/,name:'blockclose'},
+				{reg:/^-{3}$/,name:'hr'}
+			];
+			for(let inputEle of input){
+				let last;
+				if(result.length  > 0){
+					last = result[result.length - 1];
+				}
+				else{
+					last = null;
+				}
+				for(let patternEle of markPattern){
+						
+					if(patternEle.reg.test(inputEle)){
+						if(patternEle.name === 'h1'||patternEle.name === 'h2'||patternEle.name === 'h3'||patternEle.name === 'h4'||patternEle.name === 'h5'||patternEle.name === 'h6'||patternEle.name === 'quote'){
+							result.push({content:RegExp.$1,type:patternEle.name});break;
+						}
+						if(patternEle.name === 'ul' || patternEle.name === 'ol'){
+							if(last !== null && last.type === patternEle.name){
+								last.content.push(RegExp.$1);break;
+							}else{
+								result.push({content:[RegExp.$1],type:patternEle.name});
+								break;
+							}
+						}
+						if(patternEle.name === 'hr'){
+							result.push({content:'',type:patternEle.name});
+							break;
+						}
+						if(patternEle.name === 'blockopen'||patternEle.name=== 'blockclose'){
+							result.push({content:RegExp.$1,type:patternEle.name});
+							break;
+						}
+						
+
+					}else{
+						if(patternEle === markPattern[markPattern.length - 1]){
+							if(last !== null && last.type === 'blockopen'){
+								result.push({content:inputEle,type:'blockopen'});
+							}else{
+								result.push({content:inputEle,type:'p'});
+							}
+						}
+					}
+				}
+
+			}
+
+			return result;
+		}
+
+		function display(input){		
+			var displayResult = [];
+			for(let e of input){
+				if(e.type === 'ul'||e.type ==='ol'){
+					let con = '';
+					for(let e1 of e.content){
+						con += `<li>${e1}</li>`;
+					}
+					displayResult.push(`<${e.type}>${replace(con)}</${e.type}>`);
+					continue;
+				}
+				if(e.type === 'quote'){
+					displayResult.push(`<div class="quote">${replace(e.content)}</div>`);
+					continue;
+				}
+				if(e.type === 'blockopen'||e.type === 'blockclose'){
+					displayResult.push(`<pre class="codeblock">${replace(e.content)}</pre>`);
+					continue;
+				}
+				displayResult.push(`<${e.type}>${replace(e.content)}</${e.type}>`);
+			}
+			return displayResult.join('');
+		}
+
+		function replace(str){		//处理行内标志
+			return str.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/`(.+?)`/g,'<code>$1</code>').replace(/!\[(.+?)\]\((.+?)\)/g,'<img src=$2 alt=$1>').replace(/\[(.+?)\]\((.+?)\)/g,'<a href=$2>$1</a>');
+		}
+
+		function initialize(){
+			var input = document.getElementsByTagName('textarea')[0].value.split('\n');
+			var writeResult = writeContent(input);
+			document.getElementsByClassName('display')[0].innerHTML = display(writeResult);
+		}
+
+		window.onload = function(){
+			initialize();
+			document.getElementsByTagName('textarea')[0].addEventListener('input', function(){
+				initialize();
+			});
+		}
+	</script>
+</body>
+</html>

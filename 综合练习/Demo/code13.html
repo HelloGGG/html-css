@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		*.::after,::before{
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+		
+		body{
+			background-color: #ccc;
+		}
+
+		form{
+			width: 700px;
+			height:520px;
+			margin: 100px auto;
+			padding: 10px;
+			border:1px solid #222;
+			border-radius: 10px
+		}
+
+		form p {
+			margin: 5px;
+		}
+
+		form p .text{
+			width: 300px;
+			height: 50px;
+			margin-left: 10px;
+			border-radius: 5px;
+			text-indent: 10px;
+		}
+
+		textarea{
+			resize:none;
+		}
+
+		.richedit{
+			height: 100px;
+			width: 100px;
+			border:1px solid black;
+		}
+	</style>
+</head>
+<body>
+	<div class="richedit" contenteditable></div>
+	<form action="" >
+		<p>名 称:<input type="text" maxlength="20" minlength="6"  class="text" required></p>
+		<p>密 码:<input type="password" maxlength="15" minlength="5" class="text" required></p>
+		<p>邮 箱:<input type="email" class="text" title="请输入邮箱" required></p>
+		<p>网 址:<input type="url" class="text"></p>
+		<p>手 机:<input type="number" class="text" required></p>
+		<p>性 别:<input type="radio" name="sex" value="mela" checked>男<input type="radio" name="sex" value="femela">女</p>
+		<p>爱 好:<input type="checkbox" name="hobby" value="basketball">篮球<input type="checkbox" name="hobby" value="pingpan">乒乓球<input type="checkbox" name="hobby" value="volleyball">排球<input type="checkbox" name="hobby" value="tennis">网球</p>
+		<p>省 份:<select multiple>
+			<option value="beijin">北京</option>
+			<option value="shanghai" selected>上海</option>
+			<option value="hangzhou">杭州</option>
+		</select>新 的:<select multiple></select></p>
+		<textarea cols="30" rows="5" ></textarea>
+		<input type="submit" value="提交">
+	</form>
+	<script type="text/javascript">
+		var form = document.forms[0],
+			formElements = form.elements,
+			selectbox = formElements[11],
+			options = selectbox.options;
+			options1 = document.getElementsByTagName('select')[1].options;
+		window.onload = function(){
+			var newOption = new Option('深圳','shenzhen');
+			selectbox.add(newOption,null);
+			selectbox.remove(0);
+			formElements[0].focus();
+			formElements[1].onchange = function(e){
+				alert('changed');
+			}
+			formElements[2].onselect = function(e){
+				alert('selected');
+			}
+
+			selectbox.onclick = function(e){
+				document.getElementsByTagName('select')[1].appendChild(options[this.selectedIndex]);
+			}
+
+			document.getElementsByTagName('select')[1].onclick = function(e){
+				selectbox.appendChild(options1[this.selectedIndex]);
+			}
+
+
+			console.log(form);
+			console.log(formElements);
+			console.log(formElements[11].nodeName);
+			console.log(options[selectbox.selectedIndex]);
+		}
+	</script>
+</body>
+</html>
