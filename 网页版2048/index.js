@@ -311,7 +311,7 @@ function main() {
     }
 
     init()
-    // 获取用户键盘行为
+    // 获取用户键盘行为 PC端
     document.onkeydown = function (e) {
         switch (e.keyCode) {
             case 65:
@@ -339,9 +339,67 @@ function main() {
         }
 
     }
+
+    // 滑动，用于移动端
+    var startX, startY; 
+    document.addEventListener('touchstart',function (ev) { 
+        startX = ev.touches[0].pageX; 
+        startY = ev.touches[0].pageY; 
+    }, false); 
+    document.addEventListener('touchend',function (ev) { 
+        var endX, endY; 
+        endX = ev.changedTouches[0].pageX; 
+        endY = ev.changedTouches[0].pageY; 
+        var direction = GetSlideDirection(startX, startY, endX, endY); 
+        switch(direction) { 
+        case 1: 
+            // 向上 
+            gamefield.move('up');
+            gamefield.draw();
+            break; 
+        case 2: 
+            // 向下 
+            gamefield.move('down');
+            gamefield.draw();
+            break; 
+        case 3: 
+            // 向左
+            gamefield.move('left');
+            gamefield.draw();
+            break; 
+        case 4:
+            // 向右
+            gamefield.move('right');
+            gamefield.draw();
+            break;
+        default: break;
+        } 
+    }, false);
+
+    function GetSlideDirection(startX, startY, endX, endY) { 
+        var dy = startY - endY; 
+        var dx = startX - endX; 
+        var result = 0; 
+        if(dy>0&&Math.abs(dy)>Math.abs(dx)){//向上滑动 
+            result=1; 
+        }
+        if(dy<0&&Math.abs(dy)>Math.abs(dx)){//向下滑动 
+            result=2; 
+        }
+        if(dx>0&&Math.abs(dx)>Math.abs(dy)){
+            // 向左滑动
+            result=3; 
+        }
+        if(dx<0&&Math.abs(dx)>Math.abs(dy)){
+            // 向右滑动
+            result=4; 
+        }
+        return result; 
+    }
 }
 
-//入口
+// 入口
 window.onload = function () {
     main()
 }
+
